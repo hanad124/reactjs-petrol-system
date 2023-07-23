@@ -1,16 +1,13 @@
-
 import "./login.scss";
 import { useState, useContext } from "react";
+import { Link } from "react-router-dom";
 import logo from "../../assets/login-logo.png";
 import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { db } from "../../firebase";
-import {
-  collection,
-  getDocs,
-} from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 
 const Login = () => {
   const { dispatch } = useContext(AuthContext);
@@ -24,10 +21,15 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     const querySnapshot = await getDocs(collection(db, "users"));
-    const matchingUser = querySnapshot.docs.find(doc => doc.data().email === email && doc.data().password === password);
+    const matchingUser = querySnapshot.docs.find(
+      (doc) => doc.data().email === email && doc.data().password === password
+    );
     if (matchingUser) {
       localStorage.setItem("roll", JSON.stringify(matchingUser.data().roll));
-      localStorage.setItem("username", JSON.stringify(matchingUser.data().username));
+      localStorage.setItem(
+        "username",
+        JSON.stringify(matchingUser.data().username)
+      );
       localStorage.setItem("image", JSON.stringify(matchingUser.data().image));
       localStorage.setItem("accountID", JSON.stringify(matchingUser.id));
       dispatch({ type: "LOGIN", payload: matchingUser.data() });
@@ -63,7 +65,9 @@ const Login = () => {
 
   const handlePasswordBlur = () => {
     if (!validatePassword(password)) {
-      setPasswordError("Password must be at least 8 characters long and contain at least one digit and one uppercase letter");
+      setPasswordError(
+        "Password must be at least 8 characters long and contain at least one digit and one uppercase letter"
+      );
     } else {
       setPasswordError("");
     }
@@ -77,7 +81,10 @@ const Login = () => {
             <div className="logo">
               <img src={logo} alt="logo" />
               <p className="col1-title">sinay petroleum</p>
-              <p className="col1-desc"><span>Sinay management system</span> Will mange your petrol  &amp; accounts easily.</p>
+              <p className="col1-desc">
+                <span>Sinay management system</span> Will mange your petrol
+                &amp; accounts easily.
+              </p>
             </div>
           </div>
           <div className="login-cols-2">
@@ -121,9 +128,10 @@ const Login = () => {
               </div>
               {passwordError && <p className="error">{passwordError}</p>}
               <br />
-              <p className="forget_link text-[#0B63E5]">forgot password?</p>
+              <Link to ="/forgotPassword">
+                <p className="forget_link text-[#0B63E5]">forgot password?</p>
+              </Link>
               <div className="btn_login-wrapper">
-               
                 <button
                   className="submit-login"
                   type="submit"

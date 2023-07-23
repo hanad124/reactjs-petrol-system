@@ -27,6 +27,7 @@ import EditCustomer from "./pages/editCustomer/EditCustomer";
 import PurchaseReport from "./pages/reports/purchaseReport/PurchaseReport";
 import ReportView from "./pages/reports/purReportView/PurRepView";
 import EditSales from "./pages/editSales/EditSales";
+import ForgotPassword from "./pages/forgotPassword/ForgotPassword";
 
 import EditUserContext from "./context/EditUserContext";
 import EditEmployeeContext from "./context/EditEmployeeContext";
@@ -65,6 +66,10 @@ const App = () => {
                     <Routes>
                       <Route path="/">
                         <Route path="login" element={<Login />} />
+                        <Route
+                          path="forgotPassword"
+                          element={<ForgotPassword />}
+                        />
                         <Route
                           index
                           element={
