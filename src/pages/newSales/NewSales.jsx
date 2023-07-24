@@ -18,7 +18,7 @@ import {
 import { db, storage } from "../../firebase";
 import { async } from "@firebase/util";
 
-const NewPurchase = () => {
+const NewSales = () => {
   const navigate = useNavigate();
   const [fuelData, setFuelData] = useState([]);
   const [data, setData] = useState([]);
@@ -139,19 +139,33 @@ const NewPurchase = () => {
   }, [fuelID]);
 
   const handleAdd = async () => {
-    await addDoc(collection(db, "sales"), {
-      customerName: suppName,
-      customerPhone: suppPhone,
-      customerEmail: suppEmail,
-      fuelTank: fuelTank,
-      fuelType: fuelType,
-      litter: litter,
-      pricePerLitter: pricePerLitter,
-      totalPrice: totalPrice,
-      salesData: salesData, // Fix typo here
-      status: status,
-      time: dayDate + "/" + months[monthDate] + "/" + yearDate,
-    });
+    if (
+      !suppName ||
+      !suppEmail ||
+      !suppPhone ||
+      !fuelTank ||
+      !fuelType ||
+      !litter ||
+      !pricePerLitter ||
+      !totalPrice ||
+      !status
+    ) {
+      alert("please fill the fields!");
+    } else {
+      await addDoc(collection(db, "sales"), {
+        customerName: suppName,
+        customerPhone: suppPhone,
+        customerEmail: suppEmail,
+        fuelTank: fuelTank,
+        fuelType: fuelType,
+        litter: litter,
+        pricePerLitter: pricePerLitter,
+        totalPrice: totalPrice,
+        // salesData: salesData, // Fix typo here
+        status: status,
+        time: dayDate + "/" + months[monthDate] + "/" + yearDate,
+      });
+    }
 
     const currentCapacity = currentFuel.capacity;
     const newCapacity = parseInt(currentCapacity) - parseInt(litter);
@@ -207,6 +221,7 @@ const NewPurchase = () => {
               </select>
               <p className="phone">Customer Phone</p>
               <input
+                required
                 type="text"
                 disabled
                 value={suppPhone}
@@ -214,6 +229,7 @@ const NewPurchase = () => {
               />
               <p className="phone">Customer Email</p>
               <input
+                required
                 type="text"
                 disabled
                 value={suppEmail}
@@ -243,6 +259,7 @@ const NewPurchase = () => {
             <div className="wrapper-cols-3">
               <p className="address">Fuel Tunk</p>
               <input
+                required
                 type="text"
                 disabled
                 value={fuelTank}
@@ -250,12 +267,14 @@ const NewPurchase = () => {
               />
               <p className="address">Litters</p>
               <input
+                required
                 type="text"
                 value={litter}
                 onChange={(e) => setLitter(e.target.value)}
               />
               <p className="address">Price per litter</p>
               <input
+                required
                 type="text"
                 disabled
                 value={pricePerLitter}
@@ -263,6 +282,7 @@ const NewPurchase = () => {
               />
               <p className="address">Total price</p>
               <input
+                required
                 type="text"
                 disabled
                 value={totalPrice}
@@ -271,6 +291,7 @@ const NewPurchase = () => {
             </div>
             <div className="wrapper-cols-4">
               <input
+                required
                 type="date"
                 className="purch_date"
                 onChange={(e) => setSaleseDate(e.target.value)}
@@ -278,6 +299,7 @@ const NewPurchase = () => {
               <div className="status-wrapper">
                 <div className="group1">
                   <input
+                    required
                     type="radio"
                     id="pending"
                     name="status"
@@ -290,6 +312,7 @@ const NewPurchase = () => {
                 </div>
                 <div className="group2">
                   <input
+                    required
                     type="radio"
                     id="approved"
                     name="status"
@@ -312,4 +335,4 @@ const NewPurchase = () => {
   );
 };
 
-export default NewPurchase;
+export default NewSales;

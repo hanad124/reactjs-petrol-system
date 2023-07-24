@@ -1,40 +1,22 @@
-import "./newFuel.scss";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { addDoc, collection } from "firebase/firestore";
+import { db } from "../../firebase";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
-import { db, storage } from "../../firebase";
-import { async } from "@firebase/util";
 
 const NewFuel = () => {
   const navigate = useNavigate();
-  const [tankNumber, setTankNumber] = useState();
-  const [capacity, setCapacity] = useState();
-  const [fuelType, setFuelType] = useState();
-  const [pricePerLitter, setPricePerLitter] = useState();
-
-  //CHECK TANK CAPACITY
-  // useEffect(() => {
-  //   if (tankNumber == "1") {
-  //     setCapacity("300 litters");
-  //   } else if (tankNumber == "2") {
-  //     setCapacity("1,200 litters");
-  //   } else if (tankNumber == "3") {
-  //     setCapacity("500 litters");
-  //   } else if (tankNumber == "4") {
-  //     setCapacity("830 litters");
-  //   } else if (tankNumber == "5") {
-  //     setCapacity("2,100 litters");
-  //   }
-  // }, [tankNumber]);
+  const [tankNumber, setTankNumber] = useState("");
+  const [capacity, setCapacity] = useState("");
+  const [fuelType, setFuelType] = useState("");
+  const [pricePerLitter, setPricePerLitter] = useState("");
+  const [errors, setErrors] = useState({});
 
   const date = new Date();
-
   const dayDate = date.getDate();
   const monthDate = date.getMonth() + 1;
   const yearDate = date.getFullYear();
-
   const months = [
     "Jan",
     "Feb",
@@ -50,58 +32,153 @@ const NewFuel = () => {
     "Dec",
   ];
 
-  const handleAdd = async () => {
-    await addDoc(collection(db, "fuel"), {
-      tankNumber: tankNumber,
-      capacity: capacity,
-      fuelType: fuelType,
-      pricePerLitter: pricePerLitter,
-      time: dayDate + "/" + months[monthDate] + "/" + yearDate,
-    });
+  const validateInputs = () => {
+    let errors = {};
+    let formIsValid = true;
 
-    alert("data has added sucessfully!");
-    navigate(-1);
+    // Tank Number
+    if (!tankNumber || tankNumber.trim() === "") {
+      formIsValid = false;
+      errors["tankNumber"] = "Tank Number is required";
+    }
+
+    // Capacity
+    if (!capacity || capacity.trim() === "") {
+      formIsValid = false;
+      errors["capacity"] = "Capacity is required";
+    }
+
+    // Fuel Type
+    if (!fuelType || fuelType.trim() === "") {
+      formIsValid = false;
+      errors["fuelType"] = "Fuel Type is required";
+    }
+
+    // Price per Litter
+    if (!pricePerLitter || pricePerLitter.trim() === "") {
+      formIsValid = false;
+      errors["pricePerLitter"] = "Price per Litter is required";
+    } else if (isNaN(pricePerLitter)) {
+      formIsValid = false;
+      errors["pricePerLitter"] = "Price per Litter must be a number";
+    }
+
+    setErrors(errors);
+    return formIsValid;
+  };
+
+  const handleAdd = async () => {
+    if (validateInputs()) {
+      await addDoc(collection(db, "fuel"), {
+        tankNumber,
+        capacity,
+        fuelType,
+        pricePerLitter,
+        time: `${dayDate}/${months[monthDate]}/${yearDate}`,
+      });
+
+      alert("Data has been added successfully!");
+      navigate(-1);
+    }
   };
 
   return (
-    <div className="newFuel">
+    <div className="flex">
       <Sidebar />
-      <div className="newFuelContainer">
+      <div className="flex-1 ml-[233px]">
         <Navbar />
-        <div className="wrapper">
-          <div className="title">Add New Fuel</div>
-          <div className="wrapper-cols">
-            <div className="wrapper-cols-1"></div>
-            <div className="wrapper-cols-2">
-              <p className="fullName">Tank Number</p>
+        <div className="container mx-auto mt-10  lg:px-7">
+          <div className="text-2xl font-medium text-gray-900 mb-6">
+            Add New Fuel
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2  gap-y-4  mb-8">
+            <div className="flex flex-col">
+              <label
+                htmlFor="tankNumber"
+                className="text-sm font-medium text-gray-700 mb-2"
+              >
+                Tank Number
+              </label>
               <input
                 type="number"
+                id="tankNumber"
+                className={`border border-gray-300 rounded-md py-2 px-4 mb-2 w-4/6  outline-[#007bff6c] focus:border-[#007bff] focus:outline-offset-2 outline-2 ${
+                  errors["tankNumber"] ? "border-red-500" : ""
+                }`}
                 value={tankNumber}
                 onChange={(e) => setTankNumber(e.target.value)}
               />
-              <p className="phone">Capacity</p>
+              {errors["tankNumber"] && (
+                <p className="text-red-500 text-sm">{errors["tankNumber"]}</p>
+              )}
+            </div>
+            <div className="flex flex-col">
+              <label
+                htmlFor="capacity"
+                className="text-sm font-medium text-gray-700 mb-2"
+              >
+                Capacity
+              </label>
               <input
                 type="number"
+                id="capacity"
+                className={`border  w-4/6 border-gray-300 rounded-md py-2 px-4 mb-2 outline-[#007bff6c] focus:border-[#007bff] focus:outline-offset-2 outline-2 ${
+                  errors["capacity"] ? "border-red-500" : ""
+                }`}
                 value={capacity}
                 onChange={(e) => setCapacity(e.target.value)}
               />
+              {errors["capacity"] && (
+                <p className="text-red-500 text-sm">{errors["capacity"]}</p>
+              )}
             </div>
-            <div className="wrapper-cols-3">
-              <p className="address">Fuel Type</p>
+            <div className="flex flex-col">
+              <label
+                htmlFor="fuelType"
+                className="text-sm font-medium text-gray-700 mb-2"
+              >
+                Fuel Type
+              </label>
               <input
                 type="text"
+                id="fuelType"
+                className={`border  w-4/6 border-gray-300 rounded-md py-2 px-4 mb-2  outline-[#007bff6c] focus:border-[#007bff] focus:outline-offset-2 outline-2 ${
+                  errors["fuelType"] ? "border-red-500" : ""
+                }`}
                 value={fuelType}
                 onChange={(e) => setFuelType(e.target.value)}
               />
-              <p className="address">Price per litter</p>
+              {errors["fuelType"] && (
+                <p className="text-red-500 text-sm">{errors["fuelType"]}</p>
+              )}
+            </div>
+            <div className="flex flex-col">
+              <label
+                htmlFor="pricePerLitter"
+                className="text-sm font-medium text-gray-700 mb-2"
+              >
+                Price per Liter
+              </label>
               <input
-                type="number"
+                type="text"
+                id="pricePerLitter"
+                className={`border  w-4/6 border-gray-300 rounded-md py-2 px-4 mb-2  outline-[#007bff6c] focus:border-[#007bff] focus:outline-offset-2 outline-2 ${
+                  errors["pricePerLitter"] ? "border-red-500" : ""
+                }`}
                 value={pricePerLitter}
                 onChange={(e) => setPricePerLitter(e.target.value)}
               />
+              {errors["pricePerLitter"] && (
+                <p className="text-red-500 text-sm">
+                  {errors["pricePerLitter"]}
+                </p>
+              )}
             </div>
           </div>
-          <button className="btn-save" onClick={handleAdd}>
+          <button
+            className="bg-blue-500 text-white py-3 px-4 rounded-md hover:bg-blue-600 transition-colors duration-300 w-2/6"
+            onClick={handleAdd}
+          >
             Save
           </button>
         </div>
