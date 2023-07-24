@@ -4,49 +4,40 @@ import Navbar from "../../components/navbar/Navbar";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  addDoc,
   collection,
-  doc,
-  setDoc,
+  addDoc,
+  getDocs,
   getDoc,
+  doc,
+  deleteDoc,
   onSnapshot,
+  where,
+  query,
+  updateDoc,
 } from "firebase/firestore";
 import { db, storage } from "../../firebase";
+import { async } from "@firebase/util";
 
-const NewSales = () => {
+const NewPurchase = () => {
   const navigate = useNavigate();
   const [fuelData, setFuelData] = useState([]);
   const [data, setData] = useState([]);
-  const [customerName, setcustomerName] = useState("");
-  const [customerID, setcustomerID] = useState("");
+  const [suppName, setSuppName] = useState("");
+  const [suppID, setSuppID] = useState("");
   const [fuelID, setFuelID] = useState("");
-  const [customerPhone, setcustomerPhone] = useState("");
-  const [customerEmail, setcustomerEmail] = useState("");
+  const [suppPhone, setSuppPhone] = useState("");
+  const [suppEmail, setSuppEmail] = useState("");
   const [fuelTank, setFuelTank] = useState("");
   const [fuelType, setFuelType] = useState("");
+  const [currentFuel, setCurrentFuel] = useState("");
   const [litter, setLitter] = useState("");
   const [pricePerLitter, setPricePerLitter] = useState("");
   const [totalPrice, setTotalPrice] = useState("");
-  const [perchaseDate, setPerchaseDate] = useState("");
+  const [salesData, setSaleseDate] = useState("");
   const [status, setStatus] = useState("Pending");
 
-  const customerData = [];
+  const suppData = [];
   const fulTempData = [];
-
-  //CHECK FUEL PRICE
-  useEffect(() => {
-    if (fuelType == "Bazine") {
-      setPricePerLitter(1.25);
-    } else if (fuelType == "Ethanol") {
-      setPricePerLitter(1);
-    } else if (fuelType == "Gasoline") {
-      setPricePerLitter(0.5);
-    } else if (fuelType == "Kerosene") {
-      setPricePerLitter(0.25);
-    } else if (fuelType == "Diesel Fuel") {
-      setPricePerLitter(1.75);
-    }
-  }, [fuelType]);
 
   //Fuel Total
   useEffect(() => {
@@ -74,7 +65,7 @@ const NewSales = () => {
     "Dec",
   ];
 
-  // FETCH CUSTOMER NAME
+  // FETCH SUPPLIER NAME
   useEffect(() => {
     const unsub = onSnapshot(
       collection(db, "customers"),
@@ -95,21 +86,22 @@ const NewSales = () => {
     };
   }, []);
 
-  // FETCH CUSTOMER DETAILS
+  console.log("Data: ", data);
+
+  // FETCH SUPPLIER DETAILS
   useEffect(() => {
     const fetchData = async () => {
-      const docRef = doc(db, "customers", customerID);
+      const docRef = doc(db, "customers", suppID);
       const docSnap = await getDoc(docRef);
-      console.log(docSnap.data());
 
       const supphone = docSnap.data().phone;
       const supemail = docSnap.data().email;
 
-      setcustomerPhone(supphone);
-      setcustomerEmail(supemail);
+      setSuppPhone(supphone);
+      setSuppEmail(supemail);
     };
     fetchData();
-  }, [customerID]);
+  }, [suppID]);
 
   // FETCH FUEL TYPE
   useEffect(() => {
@@ -138,6 +130,8 @@ const NewSales = () => {
       const docRef = doc(db, "fuel", fuelID);
       const docSnap = await getDoc(docRef);
 
+      setCurrentFuel(docSnap.data());
+
       const tanknum = docSnap.data().tankNumber;
       setFuelTank(tanknum);
     };
@@ -146,30 +140,51 @@ const NewSales = () => {
 
   const handleAdd = async () => {
     await addDoc(collection(db, "sales"), {
-      customerName: customerName,
-      customerPhone: customerPhone,
-      customerEmail: customerEmail,
+      customerName: suppName,
+      customerPhone: suppPhone,
+      customerEmail: suppEmail,
       fuelTank: fuelTank,
       fuelType: fuelType,
       litter: litter,
       pricePerLitter: pricePerLitter,
       totalPrice: totalPrice,
-      perchaseDate: perchaseDate,
+      salesData: salesData, // Fix typo here
       status: status,
       time: dayDate + "/" + months[monthDate] + "/" + yearDate,
     });
 
-    alert("data has added sucessfully!");
+    const currentCapacity = currentFuel.capacity;
+    const newCapacity = parseInt(currentCapacity) - parseInt(litter);
+
+    const q = query(
+      collection(db, "fuel"),
+      where("tankNumber", "==", currentFuel.tankNumber)
+    );
+
+    const fieldToUpdate = "capacity";
+    const newValue = newCapacity;
+
+    getDocs(q)
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          updateDoc(doc.ref, { [fieldToUpdate]: newValue });
+        });
+      })
+      .catch((error) => {
+        console.log("Error updating document:", error);
+      });
+
+    alert("data has added successfully!");
     navigate(-1);
   };
 
   return (
-    <div className="newSales">
+    <div className="newPurchase">
       <Sidebar />
-      <div className="newSalesContainer">
+      <div className="newPurchaseContainer">
         <Navbar />
         <div className="wrapper">
-          <div className="title">Add New Customer</div>
+          <div className="title">Add New Sales</div>
           <div className="wrapper-cols">
             <div className="wrapper-cols-2">
               <p className="fullName">Customer Name</p>
@@ -177,31 +192,31 @@ const NewSales = () => {
                 name="supp-name"
                 className="supp_name"
                 onChange={(e) => {
-                  customerData.filter((el) => {
+                  suppData.filter((el) => {
                     if (el.id == e.target.value) {
-                      setcustomerID(el.id);
-                      setcustomerName(el.supname);
+                      setSuppID(el.id);
+                      setSuppName(el.supname);
                     }
                   });
                 }}
               >
                 {data.map((el) => {
-                  customerData.push({ id: el.id, supname: el.fullName });
+                  suppData.push({ id: el.id, supname: el.fullName });
                   return <option value={el.id}>{el.fullName}</option>;
                 })}
               </select>
-              <p className="phone">customer Phone</p>
+              <p className="phone">Customer Phone</p>
               <input
                 type="text"
                 disabled
-                value={customerPhone}
+                value={suppPhone}
                 onChange={(e) => setSuppPhone(e.target.value)}
               />
-              <p className="phone">customer Email</p>
+              <p className="phone">Customer Email</p>
               <input
                 type="text"
                 disabled
-                value={customerEmail}
+                value={suppEmail}
                 onChange={(e) => setSuppEmail(e.target.value)}
               />
               <p className="address">Fuel Type</p>
@@ -214,6 +229,7 @@ const NewSales = () => {
                     if (el.id == e.target.value) {
                       setFuelID(el.id);
                       setFuelType(el.fuelType);
+                      setPricePerLitter(el.pricePerLitter);
                     }
                   });
                 }}
@@ -257,7 +273,7 @@ const NewSales = () => {
               <input
                 type="date"
                 className="purch_date"
-                onChange={(e) => setPerchaseDate(e.target.value)}
+                onChange={(e) => setSaleseDate(e.target.value)}
               />
               <div className="status-wrapper">
                 <div className="group1">
@@ -296,4 +312,4 @@ const NewSales = () => {
   );
 };
 
-export default NewSales;
+export default NewPurchase;

@@ -37,6 +37,11 @@ const userColumns = [
     headerName: "Capacity",
     width: 190,
   },
+  {
+    field: "pricePerLitter",
+    headerName: "pricePerLitter",
+    width: 190,
+  },
   // {
   //   field: "status",
   //   headerName: "Status",

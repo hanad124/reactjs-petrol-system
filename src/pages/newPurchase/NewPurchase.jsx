@@ -4,12 +4,16 @@ import Navbar from "../../components/navbar/Navbar";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  addDoc,
   collection,
-  doc,
-  setDoc,
+  addDoc,
+  getDocs,
   getDoc,
+  doc,
+  deleteDoc,
   onSnapshot,
+  where,
+  query,
+  updateDoc,
 } from "firebase/firestore";
 import { db, storage } from "../../firebase";
 import { async } from "@firebase/util";
@@ -25,6 +29,7 @@ const NewPurchase = () => {
   const [suppEmail, setSuppEmail] = useState("");
   const [fuelTank, setFuelTank] = useState("");
   const [fuelType, setFuelType] = useState("");
+  const [currentFuel, setCurrentFuel] = useState("");
   const [litter, setLitter] = useState("");
   const [pricePerLitter, setPricePerLitter] = useState("");
   const [totalPrice, setTotalPrice] = useState("");
@@ -33,21 +38,6 @@ const NewPurchase = () => {
 
   const suppData = [];
   const fulTempData = [];
-
-  //CHECK FUEL PRICE
-  useEffect(() => {
-    if (fuelType == "Bazine") {
-      setPricePerLitter(1.25);
-    } else if (fuelType == "Ethanol") {
-      setPricePerLitter(1);
-    } else if (fuelType == "Gasoline") {
-      setPricePerLitter(0.5);
-    } else if (fuelType == "Kerosene") {
-      setPricePerLitter(0.25);
-    } else if (fuelType == "Diesel Fuel") {
-      setPricePerLitter(1.75);
-    }
-  }, [fuelType]);
 
   //Fuel Total
   useEffect(() => {
@@ -133,11 +123,15 @@ const NewPurchase = () => {
     };
   }, []);
 
+  // console.log("CURRENT FUEL : ", currentFuel.capacity);
+
   // FETCH FUEL DETAILS
   useEffect(() => {
     const fetchData = async () => {
       const docRef = doc(db, "fuel", fuelID);
       const docSnap = await getDoc(docRef);
+
+      setCurrentFuel(docSnap.data());
 
       const tanknum = docSnap.data().tankNumber;
       setFuelTank(tanknum);
@@ -155,12 +149,33 @@ const NewPurchase = () => {
       litter: litter,
       pricePerLitter: pricePerLitter,
       totalPrice: totalPrice,
-      perchaseDate: perchaseDate,
+      perchaseDate: perchaseDate, // Fix typo here
       status: status,
       time: dayDate + "/" + months[monthDate] + "/" + yearDate,
     });
 
-    alert("data has added sucessfully!");
+    const currentCapacity = currentFuel.capacity;
+    const newCapacity = parseInt(currentCapacity) + parseInt(litter);
+
+    const q = query(
+      collection(db, "fuel"),
+      where("tankNumber", "==", currentFuel.tankNumber)
+    );
+
+    const fieldToUpdate = "capacity";
+    const newValue = newCapacity;
+
+    getDocs(q)
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          updateDoc(doc.ref, { [fieldToUpdate]: newValue });
+        });
+      })
+      .catch((error) => {
+        console.log("Error updating document:", error);
+      });
+
+    alert("data has added successfully!");
     navigate(-1);
   };
 
@@ -215,6 +230,7 @@ const NewPurchase = () => {
                     if (el.id == e.target.value) {
                       setFuelID(el.id);
                       setFuelType(el.fuelType);
+                      setPricePerLitter(el.pricePerLitter);
                     }
                   });
                 }}
