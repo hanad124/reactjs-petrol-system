@@ -1,4 +1,3 @@
-import "./newUser.scss";
 import noImage from "../../assets/no-pictures.png";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
@@ -6,7 +5,6 @@ import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import EditUserContext from "../../context/EditUserContext";
-
 import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -35,11 +33,9 @@ const NewUser = () => {
   const navigate = useNavigate();
 
   const date = new Date();
-
   const dayDate = date.getDate();
   const monthDate = date.getMonth() + 1;
   const yearDate = date.getFullYear();
-
   const months = [
     "Jan",
     "Feb",
@@ -92,6 +88,20 @@ const NewUser = () => {
   }, [file]);
 
   const handleAdd = async () => {
+    // Validating fields
+    if (!username || !email || !password || !phone || !address || !file) {
+      alert("Please fill in all the fields.");
+      return;
+    }
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      alert("Please enter a valid email address.");
+      return;
+    }
+    if (password.length < 6) {
+      alert("Password must be at least 6 characters long.");
+      return;
+    }
+
     try {
       // const res = await createUserWithEmailAndPassword(auth, email, password);
       await addDoc(collection(db, "users"), {
@@ -104,129 +114,163 @@ const NewUser = () => {
         image: image,
         time: dayDate + "/" + months[monthDate] + "/" + yearDate,
       });
-      alert("data has added sucessfully!");
+      alert("User has been successfully added!");
       navigate("/users");
     } catch (error) {
       console.log(error);
-      alert("something wrong!");
+      alert("Something went wrong!");
     }
   };
 
-  const HidePassword = () => {
-    if (showPassword) {
-      setShowPassword(false);
-    } else {
-      setShowPassword(true);
-    }
+  const hidePassword = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
-    <div className="newUser">
+    <div className="flex">
       <Sidebar />
-      <div className="newUserContainer">
+      <div className="flex flex-col flex-1 w-full ml-[233px]">
         <Navbar />
-        <div className="wrapper">
-          <div className="title">Add New User</div>
-          <div className="wrapper-cols">
-            <div className="wrapper-cols-1">
-              <div className="image">
-                <div className="icon">
-                  <ModeEditOutlinedIcon className="edit-icon" />
-                  <input
-                    type="file"
-                    name="file"
-                    id="file"
-                    style={{ cursor: "pointer" }}
-                    // value={image}
-                    onChange={(e) => setFile(e.target.files[0])}
-                  />
-                </div>
+        <div className="px-6 py-4 flex-grow">
+          <div className="text-lg font-medium mb-6">Add New User</div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="col-span-1 flex flex-col items-center justify-center">
+              <div className="relative w-40 h-40 rounded-full overflow-hidden">
                 <img
                   src={file ? URL.createObjectURL(file) : noImage}
                   alt=""
-                  className="user-img"
+                  className="object-cover w-full h-full"
+                />
+                {per && (
+                  <div className="absolute inset-0 bg-gray-300 bg-opacity-75 flex items-center justify-center">
+                    <div className="h-16 w-16 rounded-full border-4 border-gray-100 border-opacity-25"></div>
+                    <div className="relative w-16 h-16">
+                      <div
+                        className="absolute inset-0 bg-blue-500 rounded-full"
+                        style={{
+                          transform: `translate(-50%, -50%) rotate(${
+                            per * 3.6
+                          }deg)`,
+                        }}
+                      ></div>
+                      <div className="absolute inset-0 flex items-center justify-center text-blue-500 font-bold">
+                        {per.toFixed(0)}%
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => setFile(e.target.files[0])}
+                className="mt-4 w-full"
+              />
+            </div>
+            <div className="col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="flex flex-col">
+                <label htmlFor="username" className="text-sm font-medium mb-1">
+                  Name
+                </label>
+                <input
+                  type="text"
+                  id="username"
+                  value={username}
+                  onChange={(e) => setUserName(e.target.value)}
+                  className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
-            </div>
-            <div className="wrapper-cols-2">
-              <p className="roll">Roll type</p>
-              <select
-                name="roll-type"
-                id="roll_type"
-                value={roll}
-                onChange={(e) => setRoll(e.target.value)}
-              >
-                <option value="admin">Admin</option>
-                <option value="user">User</option>
-              </select>
-              <p className="phone">Phone</p>
-              <input
-                type="text"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-              />
-              <p className="address">address</p>
-              <input
-                type="text"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-              />
-            </div>
-            <div className="wrapper-cols-3">
-              <p className="userName">Username</p>
-              <input
-                type="text"
-                value={username}
-                onChange={(e) => setUserName(e.target.value)}
-              />
-              <p className="email">Email</p>
-              <input
-                type="text"
-                onChange={(e) => setEmail(e.target.value)}
-                value={email}
-              />
-              <p className="password">Password</p>
-              <div className="pswd-wrapper">
+              <div className="flex flex-col">
+                <label htmlFor="email" className="text-sm font-medium mb-1">
+                  Email
+                </label>
                 <input
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  type="email"
+                  id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
-                {showPassword ? (
-                  <RemoveRedEyeOutlinedIcon
-                    className="eye"
-                    style={{
-                      cursor: "pointer",
-                      color: "gray",
-                      marginRight: ".5rem",
-                    }}
-                    onClick={() => {
-                      HidePassword();
-                    }}
+              </div>
+              <div className="flex flex-col">
+                <label htmlFor="password" className="text-sm font-medium mb-1">
+                  Password
+                </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    id="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
-                ) : (
-                  <VisibilityOffOutlinedIcon
-                    className="eye"
-                    style={{
-                      cursor: "pointer",
-                      color: "gray",
-                      marginRight: ".5rem",
-                    }}
-                    onClick={() => {
-                      HidePassword();
-                    }}
-                  />
-                )}
+                  <div
+                    onClick={hidePassword}
+                    className="absolute top-1/2 right-2 transform -translate-y-1/2 cursor-pointer"
+                  >
+                    {showPassword ? (
+                      <VisibilityOffOutlinedIcon />
+                    ) : (
+                      <RemoveRedEyeOutlinedIcon />
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div className="flex flex-col">
+                <label htmlFor="phone" className="text-sm font-medium mb-1">
+                  Phone
+                </label>
+                <input
+                  type="text"
+                  id="phone"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              <div className="flex flex-col">
+                <label htmlFor="address" className="text-sm font-medium mb-1">
+                  Address
+                </label>
+                <input
+                  type="text"
+                  id="address"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              <div className="flex flex-col">
+                <label htmlFor="roll" className="text-sm font-medium mb-1">
+                  Role
+                </label>
+                <select
+                  id="roll"
+                  value={roll}
+                  onChange={(e) => setRoll(e.target.value)}
+                  className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="user">User</option>
+                  <option value="admin">Admin</option>
+                </select>
               </div>
             </div>
           </div>
-          <button
-            disabled={per !== null && per < 100}
-            className="btn-save"
-            onClick={handleAdd}
-          >
-            Save
-          </button>
+          <div className="mt-6 flex justify-end">
+            <button
+              onClick={() => setEditUser(null)}
+              className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg mr-4"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleAdd}
+              className="bg-blue-500 text-white px-4 py-2 rounded-lg flex items-center"
+            >
+              <span className="mr-2">Add User</span>
+              <ModeEditOutlinedIcon />
+            </button>
+          </div>
         </div>
       </div>
     </div>

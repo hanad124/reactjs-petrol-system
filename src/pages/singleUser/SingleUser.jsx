@@ -23,6 +23,16 @@ const NewUser = () => {
 
   const userId = JSON.parse(localStorage.getItem("userID"));
 
+  function hidePassword(password) {
+    if (password.length <= 2) {
+      return password;
+    }
+    const firstChar = password.charAt(0);
+    const lastChar = password.charAt(password.length - 1);
+    const middleChars = "*".repeat(password.length - 2);
+    return firstChar + middleChars + lastChar;
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -130,7 +140,10 @@ const NewUser = () => {
               <div className="flex flex-col">
                 <div className="mb-4 flex gap-3">
                   <p className="text-gray-500 text-sm">Password: </p>
-                  <p className="font-medium">{password.replace(/./g, "*")}</p>
+                  <p className="font-medium">
+                    {hidePassword(password)}
+                    {/* {password.replace(/./g, "*")} */}
+                  </p>
                 </div>
                 <div className="mb-4  flex gap-3">
                   <p className="text-gray-500 text-sm">Roll:</p>
