@@ -24,6 +24,16 @@ const Widget = ({ type }) => {
   // temporary
   let data;
 
+  function formatNumber(num) {
+    if (num >= 1000000) {
+      return (num / 1000000).toFixed(2).toLocaleString() + "m";
+    } else if (num >= 1000) {
+      return (num / 1000).toFixed(2).toLocaleString() + "k";
+    } else {
+      return num.toLocaleString();
+    }
+  }
+
   //GET EMPLOYEES LENGTH
   useEffect(() => {
     const unsub = onSnapshot(
@@ -78,7 +88,9 @@ const Widget = ({ type }) => {
           for (let i = 0; i <= list.length; i++) {
             sum += list[i];
             {
-              sum ? setSales(sum) : "";
+              const num = sum;
+              const formattedNum = formatNumber(num);
+              sum ? setSales(formattedNum) : "";
             }
           }
         });

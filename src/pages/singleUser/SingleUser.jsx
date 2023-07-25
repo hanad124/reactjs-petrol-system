@@ -61,97 +61,85 @@ const NewUser = () => {
     return <img src={peroloader} alt="preloader" className="preloader" />;
   }
   return (
-    <div className="newUser">
-      <Sidebar />
-      <div className="newUserContainer">
+    <div className="flex">
+      <Sidebar className="" />
+      <div className="flex flex-col flex-1 w-full  ml-[233px]">
         <Navbar />
-        <div className="wrapper">
-          <div className="back-btn" onClick={handleBack}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="w-6 h-6"
-              className="back-icon"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18"
-              />
-            </svg>
-            Back
-          </div>
-          <div className="wrapper-cols">
-            <div className="wrapper-cols-1">
-              <img src={picture} alt="" className="userPicture" />
-              <div className="userName">
-                <div className="name">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={2}
-                    stroke="currentColor"
-                    className="w-6 h-6 userIcon"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
-                    />
-                  </svg>
-                  <p>{name}</p>
-                </div>
-                <div className="location">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-6 h-6 locationIcon"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
-                    />
-                  </svg>
-
-                  <p>{address}</p>
+        <div className="flex flex-col items-center justify-center flex-1 w-full py-8 ">
+          <div className="bg-white rounded-lg shadow-md w-[37rem] p-6">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center">
+                <img src={picture} alt="" className="w-12 h-12 rounded-full" />
+                <div className="ml-4">
+                  <h2 className="text-lg font-medium">{name}</h2>
+                  <div className="flex items-center text-gray-500 text-sm">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={2}
+                      stroke="currentColor"
+                      className="w-3.5 h-3.5 mr-1"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
+                      />
+                    </svg>
+                    <p className="font-small text-[12px]">{address}</p>
+                  </div>
                 </div>
               </div>
+              <button
+                className="text-white text-sm hover:bg-[#1365bb] flex items-center gap-2 bg-[#007bff] py-1 px-3 rounded-md"
+                onClick={handleBack}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width={2}
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18"
+                  />
+                </svg>
+                Back
+              </button>
             </div>
-            <div className="wrapper-cols-col2">
-              <div className="wrapper-cols-col2_one">
-                <p className="id">
-                  ID: <span>{id}</span>
-                </p>
-                <p className="userphone">
-                  Phone: <span>{phone}</span>
-                </p>
-                <p className="useremail">
-                  Email: <span>{email}</span>
-                </p>
+            <div className="flex justify-between mt-[3rem]">
+              <div className="flex flex-col">
+                <div className="mb-4 flex gap-3">
+                  <p className="text-gray-500 text-sm">ID</p>
+                  <p className="font-medium">{id}</p>
+                </div>
+                <div className="mb-4 flex gap-3">
+                  <p className="text-gray-500 text-sm">Phone</p>
+                  <p className="font-medium">{phone}</p>
+                </div>
+                <div className="mb-4 flex gap-3">
+                  <p className="text-gray-500 text-sm">Email</p>
+                  <p className="font-medium">{email}</p>
+                </div>
               </div>
-              <div className="wrapper-cols-col2_two">
-                <p className="userpassword">
-                  password: <span>{password.replace(/./g, "*")}</span>
-                </p>
-                <p className="userroll">
-                  Roll: <span>{roll}</span>
-                </p>
-                <p className="jionDate">
-                  Jioin Date: <span>{jionDate}</span>
-                </p>
+              <div className="flex flex-col">
+                <div className="mb-4 flex gap-3">
+                  <p className="text-gray-500 text-sm">Password: </p>
+                  <p className="font-medium">{password.replace(/./g, "*")}</p>
+                </div>
+                <div className="mb-4  flex gap-3">
+                  <p className="text-gray-500 text-sm">Roll:</p>
+                  <p className="font-medium">{roll}</p>
+                </div>
+                <div className="mb-4  flex gap-3">
+                  <p className="text-gray-500 text-sm">Join Date:</p>
+                  <p className="font-medium">{jionDate}</p>
+                </div>
               </div>
             </div>
           </div>

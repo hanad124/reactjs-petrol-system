@@ -121,11 +121,15 @@ const Users = () => {
   };
 
   const handleDelete = async (id) => {
-    try {
-      await deleteDoc(doc(db, "users", id));
-      setData(data.filter((item) => item.id !== id));
-    } catch (error) {
-      console.log(error);
+    const confirmed = confirm("Are you sure you want to delete this user?");
+    if (confirmed) {
+      try {
+        await deleteDoc(doc(db, "users", id));
+        setData(data.filter((item) => item.id !== id));
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
     }
   };
 

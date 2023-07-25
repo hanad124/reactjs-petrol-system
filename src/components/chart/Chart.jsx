@@ -91,7 +91,7 @@ const Chart = () => {
       <BarChart width={670} height={330} data={data}>
         <CartesianGrid strokeDasharray="3 3" className="chartGrid" />
         <XAxis
-          dataKey="suppName"
+          dataKey="customerName"
           className="XAxis_name"
           style={{ fontSize: "13px" }}
         />

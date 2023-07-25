@@ -80,12 +80,12 @@ const Login = () => {
           <div className="login-cols-1">
             <div className="logo">
               <img src={logo} alt="logo" />
-              <p className="col1-title">sinay petroleum</p>
-              <p className="col1-desc">
-                <span>Sinay management system</span> Will mange your petrol
-                &amp; accounts easily.
-              </p>
             </div>
+            <p className="col1-title">sinay petroleum</p>
+            <p className="col1-desc">
+              <span>Sinay management system</span> Will mange your petrol &amp;
+              accounts easily.
+            </p>
           </div>
           <div className="login-cols-2">
             <h1>Login to your account</h1>
@@ -128,7 +128,7 @@ const Login = () => {
               </div>
               {passwordError && <p className="error">{passwordError}</p>}
               <br />
-              <Link to ="/forgotPassword">
+              <Link to="/forgotPassword">
                 <p className="forget_link text-[#0B63E5]">forgot password?</p>
               </Link>
               <div className="btn_login-wrapper">

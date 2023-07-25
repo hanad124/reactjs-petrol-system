@@ -1,3 +1,5 @@
+import "./newFuel.scss";
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { addDoc, collection } from "firebase/firestore";
@@ -102,7 +104,7 @@ const NewFuel = () => {
               <input
                 type="number"
                 id="tankNumber"
-                className={`border border-gray-300 rounded-md py-2 px-4 mb-2 w-4/6  outline-[#007bff6c] focus:border-[#007bff] focus:outline-offset-2 outline-2 ${
+                className={`fuel_input ${
                   errors["tankNumber"] ? "border-red-500" : ""
                 }`}
                 value={tankNumber}
@@ -122,7 +124,7 @@ const NewFuel = () => {
               <input
                 type="number"
                 id="capacity"
-                className={`border  w-4/6 border-gray-300 rounded-md py-2 px-4 mb-2 outline-[#007bff6c] focus:border-[#007bff] focus:outline-offset-2 outline-2 ${
+                className={`fuel_input ${
                   errors["capacity"] ? "border-red-500" : ""
                 }`}
                 value={capacity}
@@ -142,7 +144,7 @@ const NewFuel = () => {
               <input
                 type="text"
                 id="fuelType"
-                className={`border  w-4/6 border-gray-300 rounded-md py-2 px-4 mb-2  outline-[#007bff6c] focus:border-[#007bff] focus:outline-offset-2 outline-2 ${
+                className={`fuel_input ${
                   errors["fuelType"] ? "border-red-500" : ""
                 }`}
                 value={fuelType}
@@ -162,7 +164,7 @@ const NewFuel = () => {
               <input
                 type="text"
                 id="pricePerLitter"
-                className={`border  w-4/6 border-gray-300 rounded-md py-2 px-4 mb-2  outline-[#007bff6c] focus:border-[#007bff] focus:outline-offset-2 outline-2 ${
+                className={`fuel_input ${
                   errors["pricePerLitter"] ? "border-red-500" : ""
                 }`}
                 value={pricePerLitter}

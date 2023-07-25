@@ -20,6 +20,10 @@ const NewSupplier = () => {
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
+  const [fullNameError, setFullNameError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
+  const [addressError, setAddressError] = useState("");
+  const [emailError, setEmailError] = useState("");
   const [per, setPer] = useState(null);
 
   const date = new Date();
@@ -88,8 +92,75 @@ const NewSupplier = () => {
       time: dayDate + "/" + months[monthDate] + "/" + yearDate,
     });
 
-    alert("data has added sucessfully!");
+    alert("data has added successfully!");
     navigate(-1);
+  };
+
+  const validateFullName = () => {
+    if (fullName.trim() === "") {
+      setFullNameError("Full name is required.");
+    } else {
+      setFullNameError("");
+    }
+  };
+
+  const validatePhone = () => {
+    if (phone.trim() === "") {
+      setPhoneError("Phone number is required.");
+    } else if (!/^\d{10}$/i.test(phone)) {
+      setPhoneError("Phone number must be 10 digits.");
+    } else {
+      setPhoneError("");
+    }
+  };
+
+  const validateAddress = () => {
+    if (address.trim() === "") {
+      setAddressError("Address is required.");
+    } else {
+      setAddressError("");
+    }
+  };
+
+  const validateEmail = () => {
+    if (email.trim() === "") {
+      setEmailError("Email is required.");
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
+      setEmailError("Invalid email address.");
+    } else {
+      setEmailError("");
+    }
+  };
+
+  const handleFullNameChange = (e) => {
+    setFullName(e.target.value);
+    validateFullName();
+  };
+
+  const handlePhoneChange = (e) => {
+    setPhone(e.target.value);
+    validatePhone();
+  };
+
+  const handleAddressChange = (e) => {
+    setAddress(e.target.value);
+    validateAddress();
+  };
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+    validateEmail();
+  };
+
+  const isFormValid = () => {
+    return (
+      fullNameError === "" &&
+      phoneError === "" &&
+      addressError === "" &&
+      emailError === "" &&
+      per !== null &&
+      per >= 100
+    );
   };
 
   return (
@@ -100,46 +171,55 @@ const NewSupplier = () => {
         <div className="wrapper">
           <div className="title">Add New Supplier</div>
           <div className="wrapper-cols">
-            <div className="wrapper-cols-1">
-              {/* <div className="image">
-                <div className="icon">
-                  <ModeEditOutlinedIcon className="edit-icon" />
-                  <input
-                    type="file"
-                    name="file"
-                    id="file"
-                    style={{ cursor: "pointer" }}
-                    // value={image}
-                    onChange={(e) => setFile(e.target.files[0])}
-                  />
-                </div>
-                <img
-                  src={file ? URL.createObjectURL(file) : noImage}
-                  alt=""
-                  className="user-img"
-                />
-              </div> */}
-            </div>
             <div className="wrapper-cols-2">
               <p className="fullName">Full name</p>
               <input
                 type="text"
-                onChange={(e) => setFullName(e.target.value)}
+                onChange={handleFullNameChange}
+                onBlur={validateFullName}
+                className={`${fullNameError !== "" ? "border-red-500" : ""}`}
               />
-              <p className="phone">Phone</p>
-              <input type="text" onChange={(e) => setPhone(e.target.value)} />
+              {fullNameError !== "" && (
+                <p className="text-red-500">{fullNameError}</p>
+              )}
+              <p className="label phone">Phone</p>
+              <input
+                type="text"
+                onChange={handlePhoneChange}
+                onBlur={validatePhone}
+                className={`${phoneError !== "" ? "border-red-500" : ""}`}
+              />
+              {phoneError !== "" && (
+                <p className="text-red-500">{phoneError}</p>
+              )}
             </div>
             <div className="wrapper-cols-3">
               <p className="address">Address</p>
-              <input type="text" onChange={(e) => setAddress(e.target.value)} />
+              <input
+                type="text"
+                onChange={handleAddressChange}
+                onBlur={validateAddress}
+                className={`${addressError !== "" ? "border-red-500" : ""}`}
+              />
+              {addressError !== "" && (
+                <p className="text-red-500">{addressError}</p>
+              )}
               <p className="email">Email</p>
-              <input type="text" onChange={(e) => setEmail(e.target.value)} />
+              <input
+                type="text"
+                onChange={handleEmailChange}
+                onBlur={validateEmail}
+                className={`${emailError !== "" ? "border-red-500" : ""}`}
+              />
+              {emailError !== "" && (
+                <p className="text-red-500">{emailError}</p>
+              )}
             </div>
           </div>
           <button
             className="btn-save"
             onClick={handleAdd}
-            disabled={per !== null && per < 100}
+            disabled={!isFormValid()}
           >
             Save
           </button>

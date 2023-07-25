@@ -1,4 +1,5 @@
 import "./editUser.scss";
+
 import noImage from "../../assets/no-pictures.png";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
@@ -116,8 +117,11 @@ const EditUser = () => {
   }, []);
 
   const handleUpdate = async () => {
+    if (!username || !email || !password || !phone || !address) {
+      alert("Please fill all the fields!");
+      return;
+    }
     try {
-      // const res = await createUserWithEmailAndPassword(auth, email, password);
       await setDoc(doc(db, "users", editUser), {
         roll: roll,
         phone: phone,
@@ -128,11 +132,11 @@ const EditUser = () => {
         image: image,
         time: dayDate + "/" + months[monthDate] + "/" + yearDate,
       });
-      alert("data has updated sucessfully!");
+      alert("Data has been updated successfully!");
       navigate("/users");
     } catch (error) {
       console.log(error);
-      alert("something wrong!");
+      alert("Something went wrong!");
     }
   };
 
@@ -145,108 +149,113 @@ const EditUser = () => {
   };
 
   return (
-    <div className="newUser">
+    <div className="flex">
       <Sidebar />
-      <div className="newUserContainer">
+      <div className="flex-1 ml-[233px]">
         <Navbar />
-        <div className="wrapper">
-          <div className="title">Update User</div>
-          <div className="wrapper-cols">
-            <div className="wrapper-cols-1">
-              <div className="image">
-                <div className="icon">
-                  <ModeEditOutlinedIcon className="edit-icon" />
-                  <input
-                    type="file"
-                    name="file"
-                    id="file"
-                    style={{ cursor: "pointer" }}
-                    // value={image}
-                    onChange={(e) => setFile(e.target.files[0])}
-                  />
-                </div>
-                <img
-                  src={file ? URL.createObjectURL(file) : noImage}
-                  alt=""
-                  className="user-img"
-                />
-              </div>
+        <div className="user-edit_container bg-white p-10 rounded-lg shadow-md">
+          <div className="text-3xl font-medium mb-4 text-gray-400">
+            Edit User
+          </div>
+          <div className="flex items-center mb-6">
+            <img
+              src={image ? image : noImage}
+              alt=""
+              className="w-24 h-24 object-cover rounded-full mr-6"
+            />
+            <div>
+              <div className="text-xl font-bold">{username}</div>
+              <div className="text-gray-500">{email}</div>
             </div>
-            <div className="wrapper-cols-2">
-              <p className="roll">Roll type</p>
-              <select
-                name="roll-type"
-                id="roll_type"
-                value={roll}
-                onChange={(e) => setRoll(e.target.value)}
-              >
-                <option value="admin">Admin</option>
-                <option value="user">User</option>
-              </select>
-              <p className="phone">Phone</p>
+          </div>
+          <div className="grid grid-cols-2 gap-6">
+            <div className="flex flex-col">
+              <label htmlFor="username">Username</label>
               <input
                 type="text"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-              />
-              <p className="address">address</p>
-              <input
-                type="text"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-              />
-            </div>
-            <div className="wrapper-cols-3">
-              <p className="userName">Username</p>
-              <input
-                type="text"
+                id="username"
                 value={username}
                 onChange={(e) => setUserName(e.target.value)}
+                className="border border-gray-400 rounded-lg p-2"
               />
-              <p className="email">Email</p>
+            </div>
+            <div className="flex flex-col">
+              <label htmlFor="email">Email</label>
               <input
-                type="text"
-                onChange={(e) => setEmail(e.target.value)}
+                type="email"
+                id="email"
                 value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="border border-gray-400 rounded-lg p-2"
               />
-              <p className="password">Password</p>
-              <div className="pswd-wrapper">
+            </div>
+            <div className="flex flex-col">
+              <label htmlFor="password">Password</label>
+              <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
+                  id="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  className="border border-gray-400 rounded-lg p-2 pr-10"
                 />
-                {showPassword ? (
-                  <RemoveRedEyeOutlinedIcon
-                    className="eye"
-                    style={{
-                      cursor: "pointer",
-                      color: "gray",
-                      marginRight: ".5rem",
-                    }}
-                    onClick={() => {
-                      HidePassword();
-                    }}
-                  />
-                ) : (
-                  <VisibilityOffOutlinedIcon
-                    className="eye"
-                    style={{
-                      cursor: "pointer",
-                      color: "gray",
-                      marginRight: ".5rem",
-                    }}
-                    onClick={() => {
-                      HidePassword();
-                    }}
-                  />
-                )}
+                <button
+                  className="absolute top-2 right-2 focus:outline-none"
+                  onClick={HidePassword}
+                >
+                  {showPassword ? "Hide" : "Show"}
+                </button>
               </div>
+            </div>
+            <div className="flex flex-col">
+              <label htmlFor="phone">Phone</label>
+              <input
+                type="text"
+                id="phone"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className="border border-gray-400 rounded-lg p-2"
+              />
+            </div>
+            <div className="flex flex-col">
+              <label htmlFor="address">Address</label>
+              <input
+                type="text"
+                id="address"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                className="border border-gray-400 rounded-lg p-2"
+              />
+            </div>
+            <div className="flex flex-col">
+              <label htmlFor="roll">Roll</label>
+              <select
+                id="roll"
+                value={roll}
+                onChange={(e) => setRoll(e.target.value)}
+                className="border border-gray-400 rounded-lg p-2"
+              >
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+            <div className="flex flex-col">
+              <label htmlFor="image">Image</label>
+              <input
+                type="file"
+                id="image"
+                onChange={(e) => setFile(e.target.files[0])}
+                className="border border-gray-400 rounded-lg p-2"
+              />
+              {per && (
+                <div className="mt-2">
+                  <progress value={per} max="100" />
+                </div>
+              )}
             </div>
           </div>
           <button
-            disabled={per !== null && per < 100}
-            className="btn-save"
+            className="bg-blue-500 text-white py-3 px-4 mt-6 rounded-md hover:bg-blue-600 transition-colors w-1/6"
             onClick={handleUpdate}
           >
             Update
