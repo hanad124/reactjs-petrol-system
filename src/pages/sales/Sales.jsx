@@ -181,10 +181,30 @@ const Sales = () => {
       field: "status",
       headerName: "Status",
       width: 100,
-      renderCell: () => {
+      renderCell: (params) => {
+        const index = data.findIndex((item) => item.id === params.row.id);
+        const status = salesStatus[index];
+
+        useEffect(() => {
+          const timeoutId = setTimeout(() => {
+            const nextIndex = index + 1;
+            if (nextIndex < data.length) {
+              setData((prevData) => {
+                const newData = [...prevData];
+                newData[nextIndex].status = salesStatus[nextIndex];
+                return newData;
+              });
+            }
+          }, (index + 1) * 1000);
+
+          return () => {
+            clearTimeout(timeoutId);
+          };
+        }, [index]);
+
         return (
           <div className="cellAction">
-            <div className={`status ${salesStatus}`}>{salesStatus}</div>;
+            <div className={`status ${status}`}>{status}</div>
           </div>
         );
       },
@@ -211,7 +231,7 @@ const Sales = () => {
           <DataGrid
             className="datagrid"
             rows={data}
-            columns={userColumns.concat(actionColumn).concat(statusColumn)}
+            columns={userColumns.concat(statusColumn).concat(actionColumn)}
             pageSize={9}
             rowsPerPageOptions={[9]}
             // checkboxSelection

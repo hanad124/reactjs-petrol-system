@@ -84,25 +84,22 @@ const Purchase = () => {
   const { purchaseId, SetPurchaseId } = useContext(PurchaseContext);
 
   useEffect(() => {
-    const unsub = onSnapshot(
-      collection(db, "purchase"),
-      (snapShot) => {
-        let list = [];
-        snapShot.docs.map((doc) => {
-          // console.log(doc.data());
-          list.push({ id: doc.id, status: doc.data().status, ...doc.data() });
-         
-        });
-        setData(list);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    const fetchData = async () => {
+      const querySnapshot = await getDocs(collection(db, "purchase"));
+      const list = [];
+      querySnapshot.forEach((doc) => {
+        list.push({ id: doc.id, status: doc.data().status, ...doc.data() });
+      });
+      setData([]);
 
-    return () => {
-      unsub();
+      for (let i = 0; i < list.length; i++) {
+        setTimeout(() => {
+          setData((prevData) => [...prevData, list[i]]);
+        }, i * 1000);
+      }
     };
+
+    fetchData();
   }, []);
 
   const clickUser = (id) => {

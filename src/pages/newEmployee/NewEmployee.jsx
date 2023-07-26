@@ -12,6 +12,8 @@ import {
   VisibilityOffOutlined,
 } from "@mui/icons-material";
 
+import Skeleton from "react-loading-skeleton";
+
 const NewEmployee = () => {
   const navigate = useNavigate();
   const [file, setFile] = useState("");
@@ -70,6 +72,7 @@ const NewEmployee = () => {
           console.log(error);
         },
         () => {
+          setPer(null);
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             setImage(downloadURL);
           });
@@ -93,6 +96,12 @@ const NewEmployee = () => {
       errors.phone = "Phone number is required";
     } else if (!/^\d{9}$/.test(phone)) {
       errors.phone = "Invalid phone number";
+    }
+
+    if (!age) {
+      errors.age = "Age is required";
+    } else if (!/^\d{2}$/.test(age)) {
+      errors.age = "Invalid age";
     }
 
     if (!email) {
@@ -128,133 +137,178 @@ const NewEmployee = () => {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen overflow-hidden">
       <Sidebar />
-      <div className="flex flex-col w-full ml-[233px]">
+      <div className="flex flex-col flex-1 w-full ml-[233px]">
         <Navbar />
-        <div className="flex flex-col items-center justify-center w-full flex-grow md:flex-row">
-          <div className="flex flex-col items-center justify-center w-full md:w-1/2">
-            <div className="flex items-center justify-center mb-4">
-              <div className="relative w-32 h-32 rounded-full overflow-hidden">
+        <div className="flex flex-col flex-1 mx-4 my-8 overflow-y-auto bg-white rounded-lg shadow-lg">
+          <div className="text-2xl font-medium text-gray-400 px-6">
+            Update Employee
+          </div>
+          <div className="flex flex-col md:flex-row mb-4 px-6 items-center justify-center">
+            <div className="relative w-32 h-32 md:w-48 md:h-48 flex justify-center items-center border border-blue-600 rounded-full">
+              {image ? (
                 <img
-                  src={file ? URL.createObjectURL(file) : noImage}
-                  alt=""
-                  className="object-cover w-full h-full"
+                  src={file ? URL.createObjectURL(file) : ""}
+                  alt="employee"
+                  className="object-cover w-full h-full rounded-full "
                 />
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-80 transition-opacity">
-                  <label htmlFor="file" className="cursor-pointer">
-                    <ModeEditOutlined className="text-white w-6 h-6" />
-                  </label>
-                  <input
-                    type="file"
-                    name="file"
-                    id="file"
-                    className="hidden"
-                    style={{ cursor: "pointer" }}
-                    onChange={(e) => setFile(e.target.files[0])}
-                  />
+              ) : (
+                <Skeleton
+                  width={200}
+                  height={200}
+                  className="absolute inset-0"
+                />
+              )}
+              {per && (
+                <div className="h-1 w-full bg-neutral-200 dark:bg-neutral-600 absolute top-[13rem] rounded-lg">
+                  <div
+                    className="h-1 bg-blue-600"
+                    style={{ width: `${per}%` }}
+                  ></div>
                 </div>
+              )}
+              <label
+                htmlFor="image"
+                className="absolute bottom-0 right-0 bg-white rounded-full h-10 w-10 flex justify-center items-center cursor-pointer shadow-md hover:shadow-lg"
+              >
+                <input
+                  type="file"
+                  id="image"
+                  className="hidden"
+                  disabled={per !== null}
+                  onChange={(e) => setFile(e.target.files[0])}
+                />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 text-gray-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                  />
+                </svg>
+              </label>
+            </div>
+            <div className="flex flex-col md:ml-4 mt-4 md:mt-0">
+              <div className="text-gray-800 text-xl mb-2">{fullName}</div>
+              <div className="text-gray-600 text-sm">
+                {email ? email : "No email available"}
               </div>
             </div>
           </div>
-          <div className="flex flex-col items-center justify-center w-full md:w-1/2">
-            <div className="text-lg font-bold mb-4">Add New Employee</div>
-            <div className="flex flex-col md:flex-row">
-              <div className="flex flex-col w-full md:w-1/2">
-                <label htmlFor="fullName" className="mb-1">
-                  Full Name
+          <div className="border-t border-gray-200 px-6 py-4 mt-[1rem]">
+            <form action="" className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="full-name" className="text-gray-800 ">
+                  Full name
                 </label>
                 <input
                   type="text"
-                  name="fullName"
-                  id="fullName"
-                  className={`border border-gray-400 rounded-lg px-3 py-2 mb-4 w-full ${
+                  id="full-name"
+                  className={`block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 py-2 px-3 focus:outline-none ${
                     formErrors.fullName && "border-red-500"
                   }`}
+                  value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                 />
                 {formErrors.fullName && (
                   <div className="text-red-500 mb-2">{formErrors.fullName}</div>
                 )}
-                <label htmlFor="phone" className="mb-1">
-                  Phone
+              </div>
+              <div>
+                <label htmlFor="email" className="text-gray-800">
+                  Email address
                 </label>
                 <input
-                  type="text"
-                  name="phone"
-                  id="phone"
-                  className={`border border-gray-400 rounded-lg px-3 py-2 mb-4 w-full ${
+                  type="email"
+                  id="email"
+                  className={`block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 py-2 px-3 focus:outline-none ${
                     formErrors.phone && "border-red-500"
                   }`}
-                  onChange={(e) => setPhone(e.target.value)}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
                 {formErrors.phone && (
                   <div className="text-red-500 mb-2">{formErrors.phone}</div>
                 )}
               </div>
-              <div className="flex flex-col w-full md:w-1/2">
-                <label htmlFor="email" className="mb-1">
-                  Email
+              <div>
+                <label htmlFor="phone" className="text-gray-800">
+                  Phone number
                 </label>
                 <input
-                  type="email"
-                  name="email"
-                  id="email"
-                  className={`border border-gray-400 rounded-lg px-3 py-2 mb-4 w-full ${
+                  type="text"
+                  id="phone"
+                  className={`block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 py-2 px-3 focus:outline-none ${
                     formErrors.email && "border-red-500"
                   }`}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
                 />
                 {formErrors.email && (
                   <div className="text-red-500 mb-2">{formErrors.email}</div>
                 )}
-                <label htmlFor="gender" className="mb-1">
+              </div>
+              <div>
+                <label htmlFor="age" className="text-gray-800">
+                  Age
+                </label>
+                <input
+                  type="number"
+                  id="age"
+                  className={`block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 py-2 px-3 focus:outline-none ${
+                    formErrors.age && "border-red-500"
+                  }`}
+                  value={age}
+                  onChange={(e) => setAge(e.target.value)}
+                />
+                {formErrors.age && (
+                  <div className="text-red-500 mb-2">{formErrors.age}</div>
+                )}
+              </div>
+              <div>
+                <label htmlFor="address" className="text-gray-800">
+                  Address
+                </label>
+                <input
+                  type="text"
+                  id="address"
+                  className={`block w-full border border-gray-300 focus:outline-none rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 py-2 px-3`}
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                />
+              </div>
+              <div>
+                <label htmlFor="gender" className="text-gray-800">
                   Gender
                 </label>
                 <select
-                  name="gender"
                   id="gender"
-                  className="border border-gray-400 rounded-lg px-3 py-2 mb-4 w-full"
+                  className="block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 py-2 px-3"
+                  value={gender}
                   onChange={(e) => setGender(e.target.value)}
                 >
                   <option value="male">Male</option>
                   <option value="female">Female</option>
                 </select>
               </div>
-            </div>
-            <div className="flex flex-col md:flex-row">
-              <div className="flex flex-col w-full md:w-1/2">
-                <label htmlFor="age" className="mb-1">
-                  Age
-                </label>
-                <input
-                  type="number"
-                  name="age"
-                  id="age"
-                  className="border border-gray-400 rounded-lg px-3 py-2 mb-4 w-full"
-                  onChange={(e) => setAge(e.target.value)}
-                />
+              <div className="col-span-2">
+                <button
+                  type="button"
+                  disabled={per !== null}
+                  className="inline-flex items-center px-14 py-3 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:border-indigo-900 focus:shadow-outline-indigo disabled:opacity-25 transition ease-in-out duration-150"
+                  onClick={handleAdd}
+                >
+                  Update
+                </button>
               </div>
-              <div className="flex flex-col w-full md:w-1/2">
-                <label htmlFor="address" className="mb-1">
-                  Address
-                </label>
-                <textarea
-                  name="address"
-                  id="address"
-                  rows="3"
-                  className="border border-gray-400 rounded-lg px-3 py-2 mb-4 w-full"
-                  onChange={(e) => setAddress(e.target.value)}
-                ></textarea>
-              </div>
-            </div>
-            <button
-              type="button"
-              className="bg-blue-500 text-white rounded-lg px-4 py-2"
-              onClick={handleAdd}
-            >
-              Add Employee
-            </button>
+            </form>
           </div>
         </div>
       </div>

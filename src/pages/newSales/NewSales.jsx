@@ -161,7 +161,7 @@ const NewSales = () => {
         litter: litter,
         pricePerLitter: pricePerLitter,
         totalPrice: totalPrice,
-        // salesData: salesData, // Fix typo here
+        salesData: salesData, // Fix typo here
         status: status,
         time: dayDate + "/" + months[monthDate] + "/" + yearDate,
       });

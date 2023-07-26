@@ -128,11 +128,6 @@ const Employee = () => {
       renderCell: (params) => {
         return (
           <div className="cellAction">
-            <Link to="" style={{ textDecoration: "none" }}>
-              <div className="viewButton" onClick={() => ""}>
-                View
-              </div>
-            </Link>
             <Link to="/employees/edit-employee">
               <div
                 className="editButton"

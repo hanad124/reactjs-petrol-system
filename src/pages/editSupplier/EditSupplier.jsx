@@ -19,7 +19,7 @@ import {
 } from "firebase/firestore";
 import { db, storage } from "../../firebase";
 
-const EditEmployee = () => {
+const EditSupplier = () => {
   const { supplierId, SetSupplierId } = useContext(SupplierContext);
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -84,12 +84,12 @@ const EditEmployee = () => {
   };
 
   return (
-    <div className="editEmployee">
+    <div className="editSupplier">
       <Sidebar />
-      <div className="editEmployeeContainer">
+      <div className="editSupplierContainer">
         <Navbar />
         <div className="wrapper">
-          <div className="title">Update Employee</div>
+          <div className="title">Update Supplier</div>
           <div className="wrapper-cols">
             <div className="wrapper-cols-1"></div>
             <div className="wrapper-cols-2">
@@ -130,4 +130,4 @@ const EditEmployee = () => {
   );
 };
 
-export default EditEmployee;
+export default EditSupplier;
