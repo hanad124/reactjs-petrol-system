@@ -148,16 +148,23 @@ const NewEmployee = () => {
           <div className="flex flex-col md:flex-row mb-4 px-6 items-center justify-center">
             <div className="relative w-32 h-32 md:w-48 md:h-48 flex justify-center items-center border border-blue-600 rounded-full">
               {image ? (
-                <img
-                  src={file ? URL.createObjectURL(file) : ""}
-                  alt="employee"
-                  className="object-cover w-full h-full rounded-full "
-                />
+                !per && (
+                  <img
+                    src={file ? URL.createObjectURL(file) : ""}
+                    alt="employee"
+                    className="object-cover w-full h-full rounded-full "
+                  />
+                )
               ) : (
                 <Skeleton
                   width={200}
                   height={200}
                   className="absolute inset-0"
+                  style={{
+                    borderRadius: "50%",
+                    zIndex: "1",
+                    position: "relative",
+                  }}
                 />
               )}
               {per && (
@@ -170,7 +177,7 @@ const NewEmployee = () => {
               )}
               <label
                 htmlFor="image"
-                className="absolute bottom-0 right-0 bg-white rounded-full h-10 w-10 flex justify-center items-center cursor-pointer shadow-md hover:shadow-lg"
+                className="absolute bottom-0 right-0 bg-white rounded-full h-10 w-10 flex justify-center items-center cursor-pointer shadow-md hover:shadow-lg  z-10"
               >
                 <input
                   type="file"
@@ -196,7 +203,9 @@ const NewEmployee = () => {
               </label>
             </div>
             <div className="flex flex-col md:ml-4 mt-4 md:mt-0">
-              <div className="text-gray-800 text-xl mb-2">{fullName}</div>
+              <div className="text-gray-800 text-xl mb-2">
+                {fullName || <Skeleton />}
+              </div>
               <div className="text-gray-600 text-sm">
                 {email ? email : "No email available"}
               </div>

@@ -17,6 +17,8 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "../../firebase";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const userColumns = [
   // { field: "id", headerName: "ID", width: 70 },
@@ -27,7 +29,11 @@ const userColumns = [
     renderCell: (params) => {
       return (
         <div className="cellWithImg">
-          <img className="cellImg" src={params.row.image} alt="avatar" />
+          {params.row.image ? (
+            <img className="cellImg" src={params.row.image} alt="avatar" />
+          ) : (
+            <Skeleton width={60} height={60} />
+          )}
           {params.row.fullName}
         </div>
       );
@@ -167,14 +173,15 @@ const Employee = () => {
               Add New
             </div>
           </div>
-          <DataGrid
-            className="datagrid"
-            rows={data}
-            columns={userColumns.concat(actionColumn)}
-            pageSize={9}
-            rowsPerPageOptions={[9]}
-            // checkboxSelection
-          />
+          <SkeletonTheme baseColor="#202020" highlightColor="#444">
+            <DataGrid
+              className="datagrid"
+              rows={data}
+              columns={userColumns.concat(actionColumn)}
+              pageSize={9}
+              rowsPerPageOptions={[9]}
+            />
+          </SkeletonTheme>
         </div>
       </div>
     </div>

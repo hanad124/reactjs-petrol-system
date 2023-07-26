@@ -174,16 +174,19 @@ const EditEmployee = () => {
           <div className="flex flex-col md:flex-row mb-4 px-6 items-center justify-center">
             <div className="relative w-32 h-32 md:w-48 md:h-48 flex justify-center items-center border-2 border-blue-600 rounded-full">
               {image ? (
-                <img
-                  src={image}
-                  alt="employee"
-                  className="object-cover w-full h-full rounded-full"
-                />
+                !per && (
+                  <img
+                    src={image}
+                    alt="employee"
+                    className="object-cover w-full h-full rounded-full"
+                  />
+                )
               ) : (
                 <Skeleton
                   width={200}
                   height={200}
-                  className="absolute inset-0"
+                  className="absolute inset-0 rounded-full"
+                  style={{ borderRadius: "50%" }}
                 />
               )}
               {per && (
@@ -222,10 +225,10 @@ const EditEmployee = () => {
             </div>
             <div className="flex flex-col md:ml-4 mt-4 md:mt-0">
               <div className="text-gray-800 font-bold text-xl mb-2">
-                {fullName}
+                {fullName || <Skeleton />}
               </div>
               <div className="text-gray-600 text-sm">
-                {email ? email : "No email available"}
+                {email ? email : "No email available" || <Skeleton />}
               </div>
             </div>
           </div>
