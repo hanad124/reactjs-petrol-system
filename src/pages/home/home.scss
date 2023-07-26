@@ -1,6 +1,7 @@
 .home {
   display: flex;
   width: 100%;
+  overflow-x: hidden;
   position: relative;
 
   .homeContainer {
@@ -31,6 +32,7 @@
         font-weight: 500;
         color: gray;
         font-size: 15px;
+        margin-bottom: 10px;
       }
     }
   }

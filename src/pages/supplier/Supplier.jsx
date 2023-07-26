@@ -92,11 +92,14 @@ const Supplier = () => {
   };
 
   const handleDelete = async (id) => {
-    try {
-      await deleteDoc(doc(db, "suppliers", id));
-      setData(data.filter((item) => item.id !== id));
-    } catch (error) {
-      console.log(error);
+    const confirmed = confirm("Are you sure you want to delete this supplier?");
+    if (confirmed) {
+      try {
+        await deleteDoc(doc(db, "suppliers", id));
+        setData(data.filter((item) => item.id !== id));
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 

@@ -23,13 +23,13 @@ const userColumns = [
   {
     field: "customerName",
     headerName: "Name",
-    width: 170,
+    width: 210,
   },
 
   {
     field: "customerPhone",
     headerName: "Phone",
-    width: 100,
+    width: 140,
   },
   // {
   //   field: "suppEmail",
@@ -39,7 +39,7 @@ const userColumns = [
   {
     field: "fuelType",
     headerName: "Fuel",
-    width: 70,
+    width: 80,
   },
   {
     field: "fuelTank",
@@ -54,7 +54,7 @@ const userColumns = [
   {
     field: "pricePerLitter",
     headerName: "Price/Litter",
-    width: 90,
+    width: 80,
   },
   {
     field: "totalPrice",
@@ -84,12 +84,12 @@ const Sales = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="purchase">
+    <div className="sales">
       <Sidebar />
-      <div className="purchaseContainer">
+      <div className="salesContainer">
         <Navbar />
         <div className="datatable">
-          <div className="datatableTitle">
+          <div className="datatableTitle ">
             Sales
             <div
               className="link"
@@ -100,6 +100,8 @@ const Sales = () => {
               Add New
             </div>
           </div>
+        </div>
+        <div className="h-screen mx-[1rem]">
           <SalesData buttons={true} />
         </div>
       </div>
@@ -252,7 +254,7 @@ export const SalesData = ({ buttons }) => {
 
   return (
     <DataGrid
-      className="datagrid"
+      className="datagrid h-full overflow-x-hidden"
       rows={data}
       columns={columns}
       pageSize={9}

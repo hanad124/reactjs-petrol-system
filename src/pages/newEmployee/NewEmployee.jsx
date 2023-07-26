@@ -314,7 +314,7 @@ const NewEmployee = () => {
                   className="inline-flex items-center px-14 py-3 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:border-indigo-900 focus:shadow-outline-indigo disabled:opacity-25 transition ease-in-out duration-150"
                   onClick={handleAdd}
                 >
-                  Update
+                  Save
                 </button>
               </div>
             </form>
