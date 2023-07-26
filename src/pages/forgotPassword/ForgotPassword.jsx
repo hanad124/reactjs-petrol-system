@@ -51,7 +51,7 @@ function ForgotPassword() {
           correctEmail.push({ id: doc.id, ...doc.data() });
         });
         if (email == correctEmail[0].email) {
-          setSecretQuestion(correctEmail[0].security_Question);
+          setSecretQuestion(correctEmail[0].secret_question);
           setStep(2);
         } else {
           setEmailError("Email not found.");

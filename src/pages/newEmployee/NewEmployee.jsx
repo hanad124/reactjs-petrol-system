@@ -143,7 +143,7 @@ const NewEmployee = () => {
         <Navbar />
         <div className="flex flex-col flex-1 mx-4 my-8 overflow-y-auto bg-white rounded-lg shadow-lg">
           <div className="text-2xl font-medium text-gray-400 px-6">
-            Update Employee
+            New Employee
           </div>
           <div className="flex flex-col md:flex-row mb-4 px-6 items-center justify-center">
             <div className="relative w-32 h-32 md:w-48 md:h-48 flex justify-center items-center border border-blue-600 rounded-full">

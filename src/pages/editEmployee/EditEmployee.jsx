@@ -199,7 +199,7 @@ const EditEmployee = () => {
               )}
               <label
                 htmlFor="image"
-                className="absolute bottom-0 right-0 bg-white rounded-full h-10 w-10 flex justify-center items-center cursor-pointer shadow-md hover:shadow-lg"
+                className="absolute bottom-0 right-0 bg-white rounded-full h-10 w-10 flex justify-center items-center cursor-pointer shadow-md hover:shadow-lg z-10"
               >
                 <input
                   type="file"

@@ -108,11 +108,6 @@ const Supplier = () => {
       renderCell: (params) => {
         return (
           <div className="cellAction">
-            <Link to="" style={{ textDecoration: "none" }}>
-              <div className="viewButton" onClick={() => ""}>
-                View
-              </div>
-            </Link>
             <Link to="/supplier/edit-supplier">
               <div
                 className="editButton"

@@ -17,39 +17,6 @@ import {
 } from "firebase/firestore";
 import { db } from "../../firebase";
 
-const actionColumn = [
-  {
-    field: "action",
-    headerName: "Action",
-    width: 130,
-    renderCell: (params) => {
-      return (
-        <div className="cellAction">
-          {/* <Link to="" style={{ textDecoration: "none" }}>
-            <div className="viewButton" onClick={() => ""}>
-              View
-            </div>
-          </Link> */}
-          <Link to="/purchase/edit-purchase">
-            <div
-              className="editButton"
-              onClick={() => editUserBtn(params.row.id)}
-            >
-              Edit
-            </div>
-          </Link>
-          <div
-            className="deleteButton"
-            onClick={() => handleDelete(params.row.id)}
-          >
-            Delete
-          </div>
-        </div>
-      );
-    },
-  },
-];
-
 const userColumns = [
   // { field: "id", headerName: "ID", width: 70 },
   {
@@ -103,37 +70,11 @@ const userColumns = [
     headerName: "Status",
     width: 160,
     renderCell: (params) => {
-      let statusStyle = {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        height: "100%",
-        width: "100%",
-        borderRadius: 4,
-        fontWeight: 600,
-        fontSize: "0.875rem",
-        lineHeight: "1.25rem",
-        padding: "0.5rem",
-        backgroundColor: "",
-        color: "",
-      };
-      switch (params.row.status) {
-        case "Pending":
-          statusStyle.backgroundColor = "#FCD34D";
-          statusStyle.color = "#000000";
-          break;
-        case "Delivered":
-          statusStyle.backgroundColor = "#6EE7B7";
-          statusStyle.color = "#000000";
-          break;
-        case "Cancelled":
-          statusStyle.backgroundColor = "#F87171";
-          statusStyle.color = "#FFFFFF";
-          break;
-        default:
-          break;
-      }
-      return <div style={statusStyle}>{params.row.status}</div>;
+      return (
+        <div className={`cellWithStatus ${params.row.status}`}>
+          {params.row.status}
+        </div>
+      );
     },
   },
 ];
@@ -179,6 +120,39 @@ const Purchase = () => {
       console.log(error);
     }
   };
+
+  const actionColumn = [
+    {
+      field: "action",
+      headerName: "Action",
+      width: 130,
+      renderCell: (params) => {
+        return (
+          <div className="cellAction">
+            {/* <Link to="" style={{ textDecoration: "none" }}>
+            <div className="viewButton" onClick={() => ""}>
+              View
+            </div>
+          </Link> */}
+            <Link to="/purchase/edit-purchase">
+              <div
+                className="editButton"
+                onClick={() => editUserBtn(params.row.id)}
+              >
+                Edit
+              </div>
+            </Link>
+            <div
+              className="deleteButton"
+              onClick={() => handleDelete(params.row.id)}
+            >
+              Delete
+            </div>
+          </div>
+        );
+      },
+    },
+  ];
 
   return (
     <div className="purchase">

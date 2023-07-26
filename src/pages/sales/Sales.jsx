@@ -82,6 +82,33 @@ const userColumns = [
 
 const Sales = () => {
   const navigate = useNavigate();
+
+  return (
+    <div className="purchase">
+      <Sidebar />
+      <div className="purchaseContainer">
+        <Navbar />
+        <div className="datatable">
+          <div className="datatableTitle">
+            Sales
+            <div
+              className="link"
+              onClick={() => {
+                navigate("/sales/new-sales");
+              }}
+            >
+              Add New
+            </div>
+          </div>
+          <SalesData buttons={true} />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const SalesData = ({ buttons }) => {
+  const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [salesStatus, setSalesStatus] = useState([]);
   // const { salesId, SetSalesId } = useContext(SalesContext);
@@ -147,10 +174,10 @@ const Sales = () => {
     {
       field: "action",
       headerName: "Action",
-      width: 130,
+      width: 140,
       renderCell: (params) => {
         return (
-          <div className="cellAction">
+          <div className="cellAction flex gap-2">
             {/* <Link to="" style={{ textDecoration: "none" }}>
               <div className="viewButton" onClick={() => ""}>
                 View
@@ -158,14 +185,14 @@ const Sales = () => {
             </Link> */}
             <Link to="/sales/edit-sales">
               <div
-                className="editButton"
+                className="py-[2px] px-3 rounded-md text-green-600 border-[1px] border-solid border-green-600"
                 onClick={() => editUserBtn(params.row.id)}
               >
                 Edit
               </div>
             </Link>
             <div
-              className="deleteButton"
+              className="py-[2px] px-3 rounded-md text-red-600 border-[1px] border-solid border-red-600"
               onClick={() => handleDelete(params.row.id)}
             >
               Delete
@@ -204,41 +231,33 @@ const Sales = () => {
 
         return (
           <div className="cellAction">
-            <div className={`status ${status}`}>{status}</div>
+            <div
+              className={`status ${status} ${
+                status === "Pending"
+                  ? "bg-yellow-500/20 text-yellow-600 py-[.2rem] px-[.5rem] rounded-md"
+                  : "text-green-600 bg-green-500/20 py-[.2rem] px-[.5rem] rounded-md"
+              } `}
+            >
+              {status}
+            </div>
           </div>
         );
       },
     },
   ];
+  let columns = userColumns.concat(statusColumn);
+  if (buttons) {
+    columns = columns.concat(actionColumn);
+  }
 
   return (
-    <div className="purchase">
-      <Sidebar />
-      <div className="purchaseContainer">
-        <Navbar />
-        <div className="datatable">
-          <div className="datatableTitle">
-            Sales
-            <div
-              className="link"
-              onClick={() => {
-                navigate("/sales/new-sales");
-              }}
-            >
-              Add New
-            </div>
-          </div>
-          <DataGrid
-            className="datagrid"
-            rows={data}
-            columns={userColumns.concat(statusColumn).concat(actionColumn)}
-            pageSize={9}
-            rowsPerPageOptions={[9]}
-            // checkboxSelection
-          />
-        </div>
-      </div>
-    </div>
+    <DataGrid
+      className="datagrid"
+      rows={data}
+      columns={columns}
+      pageSize={9}
+      rowsPerPageOptions={[9]}
+    />
   );
 };
 

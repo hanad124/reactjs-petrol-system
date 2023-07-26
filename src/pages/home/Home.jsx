@@ -8,6 +8,7 @@ import Widget from "../../components/widgets/Widgets";
 import Featured from "../../components/featured/Featured";
 import Chart from "../../components/chart/Chart";
 import Table from "../../components/table/Table";
+import { SalesData } from "../sales/Sales";
 
 function Home() {
   return (
@@ -27,7 +28,7 @@ function Home() {
         </div>
         <div className="listContainer">
           <div className="listTitle">Latest Transections</div>
-          <Table />
+          <SalesData buttons={true} />
         </div>
       </div>
     </div>
