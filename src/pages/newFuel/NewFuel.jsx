@@ -1,4 +1,4 @@
-import "./newFuel.scss";
+// import "./newFuel.scss";
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -93,7 +93,7 @@ const NewFuel = () => {
           <div className="text-2xl font-medium text-gray-900 mb-6">
             Add New Fuel
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2  gap-y-4  mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2  gap-4 mr-[10rem] mb-8">
             <div className="flex flex-col">
               <label
                 htmlFor="tankNumber"
@@ -104,7 +104,7 @@ const NewFuel = () => {
               <input
                 type="number"
                 id="tankNumber"
-                className={`fuel_input ${
+                className={`block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 py-2 px-3 focus:outline-none ${
                   errors["tankNumber"] ? "border-red-500" : ""
                 }`}
                 value={tankNumber}
@@ -124,7 +124,7 @@ const NewFuel = () => {
               <input
                 type="number"
                 id="capacity"
-                className={`fuel_input ${
+                className={`block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 py-2 px-3 focus:outline-none ${
                   errors["capacity"] ? "border-red-500" : ""
                 }`}
                 value={capacity}
@@ -144,7 +144,7 @@ const NewFuel = () => {
               <input
                 type="text"
                 id="fuelType"
-                className={`fuel_input ${
+                className={`block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 py-2 px-3 focus:outline-none ${
                   errors["fuelType"] ? "border-red-500" : ""
                 }`}
                 value={fuelType}
@@ -164,7 +164,7 @@ const NewFuel = () => {
               <input
                 type="text"
                 id="pricePerLitter"
-                className={`fuel_input ${
+                className={`block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 py-2 px-3 focus:outline-none ${
                   errors["pricePerLitter"] ? "border-red-500" : ""
                 }`}
                 value={pricePerLitter}

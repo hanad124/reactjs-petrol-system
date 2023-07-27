@@ -27,7 +27,7 @@ function Home() {
           <Chart />
         </div>
         <div className="listContainer">
-          <div className="listTitle">Last customers Transections</div>
+          <div className="listTitle">The recent transactions for customers</div>
           <SalesData buttons={false} />
         </div>
       </div>
