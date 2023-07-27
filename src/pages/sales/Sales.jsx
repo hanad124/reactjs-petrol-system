@@ -31,11 +31,7 @@ const userColumns = [
     headerName: "Phone",
     width: 140,
   },
-  // {
-  //   field: "suppEmail",
-  //   headerName: "Email",
-  //   width: 150,
-  // },
+
   {
     field: "fuelType",
     headerName: "Fuel",
@@ -62,22 +58,10 @@ const userColumns = [
     width: 80,
   },
   {
-    field: "perchaseDate",
+    field: "salesDate",
     headerName: "Date",
     width: 120,
   },
-  // {
-  //   field: "status",
-  //   headerName: "Status",
-  //   width: 160,
-  //   renderCell: (params) => {
-  //     return (
-  //       <div className={`cellWithStatus ${params.row.status}`}>
-  //         {params.row.status}
-  //       </div>
-  //     );
-  //   },
-  // },
 ];
 
 const Sales = () => {
@@ -113,7 +97,7 @@ export const SalesData = ({ buttons }) => {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [salesStatus, setSalesStatus] = useState([]);
-  // const { salesId, SetSalesId } = useContext(SalesContext);
+  const { salesId, SetSalesId } = useContext(SalesContext);
 
   useEffect(() => {
     const unsub = onSnapshot(
@@ -161,6 +145,7 @@ export const SalesData = ({ buttons }) => {
 
   const editUserBtn = (id) => {
     localStorage.setItem("salesID", JSON.stringify(id));
+    SetSalesId(id);
   };
 
   const handleDelete = async (id) => {

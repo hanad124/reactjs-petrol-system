@@ -33,7 +33,7 @@ const NewSales = () => {
   const [litter, setLitter] = useState("");
   const [pricePerLitter, setPricePerLitter] = useState("");
   const [totalPrice, setTotalPrice] = useState("");
-  const [salesData, setSaleseDate] = useState("");
+  const [salesDate, setSaleseDate] = useState("");
   const [status, setStatus] = useState("Pending");
 
   const suppData = [];
@@ -161,7 +161,7 @@ const NewSales = () => {
         litter: litter,
         pricePerLitter: pricePerLitter,
         totalPrice: totalPrice,
-        salesData: salesData, // Fix typo here
+        salesDate: salesDate, // Fix typo here
         status: status,
         time: dayDate + "/" + months[monthDate] + "/" + yearDate,
       });
