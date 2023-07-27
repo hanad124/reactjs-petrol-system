@@ -84,21 +84,20 @@ const Customer = () => {
     };
   }, []);
 
-  // const clickUser = (id) => {
-  //   localStorage.setItem("employeeID", JSON.stringify(id));
-  // };
-
   const editUserBtn = (id) => {
     localStorage.setItem("customerID", JSON.stringify(id));
     SetCustomerId(id);
   };
 
   const handleDelete = async (id) => {
-    try {
-      await deleteDoc(doc(db, "customers", id));
-      setData(data.filter((item) => item.id !== id));
-    } catch (error) {
-      console.log(error);
+    const confirmed = confirm("Are you sure you want to delete this customer?");
+    if (confirmed) {
+      try {
+        await deleteDoc(doc(db, "customers", id));
+        setData(data.filter((item) => item.id !== id));
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -110,11 +109,6 @@ const Customer = () => {
       renderCell: (params) => {
         return (
           <div className="cellAction">
-            <Link to="" style={{ textDecoration: "none" }}>
-              <div className="viewButton" onClick={() => ""}>
-                View
-              </div>
-            </Link>
             <Link to="/customers/edit-customer">
               <div
                 className="editButton"

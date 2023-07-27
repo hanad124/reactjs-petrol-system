@@ -1,28 +1,33 @@
-import "./editCustomer.scss";
+// import "./EditCustomer.scss";
+
+import { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { doc, setDoc, getDoc } from "firebase/firestore";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { db, storage } from "../../firebase";
+import CustomerContext from "../../context/CustomerContext";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
-import CustomerContext from "../../context/CustomerContext";
-import { useEffect, useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
-import {
-  addDoc,
-  getDoc,
-  collection,
-  doc,
-  serverTimestamp,
-  setDoc,
-} from "firebase/firestore";
-import { db, storage } from "../../firebase";
-
-const customerID = JSON.parse(localStorage.getItem("customerID"));
+import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
+import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
+import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
+import noImage from "../../assets/no-pictures.png";
+import Skeleton from "react-loading-skeleton";
 
 const EditCustomer = () => {
-  const navigate = useNavigate();
   const { customerId, SetCustomerId } = useContext(CustomerContext);
+
+  const navigate = useNavigate();
+  const [file, setFile] = useState("");
+  const [image, setImage] = useState("");
   const [email, setEmail] = useState("");
   const [fullName, setFullName] = useState("");
+  const [gender, setGender] = useState("male");
   const [phone, setPhone] = useState("");
+  const [age, setAge] = useState("");
   const [address, setAddress] = useState("");
+  const [per, setPer] = useState(null);
+  const [formErrors, setFormErrors] = useState({});
 
   const date = new Date();
 
@@ -49,7 +54,6 @@ const EditCustomer = () => {
     const fetchData = async () => {
       const docRef = doc(db, "customers", customerId);
       const docSnap = await getDoc(docRef);
-
       const userfullName = docSnap.data().fullName;
       const userAddress = docSnap.data().address;
       const userPhone = docSnap.data().phone;
@@ -60,71 +64,139 @@ const EditCustomer = () => {
       setPhone(userPhone);
       setAddress(userAddress);
     };
+
     fetchData();
-  }, []);
+  }, [CustomerContext]);
 
   const handleUpdate = async () => {
+    const errors = {};
+
+    // Input validation
+    if (!fullName) {
+      errors.fullName = "Full name is required";
+    }
+
+    if (!phone) {
+      errors.phone = "Phone number is required";
+    } else if (!/^\d{9}$/.test(phone)) {
+      errors.phone = "Invalid phone number";
+    }
+
+    if (!email) {
+      errors.email = "Email is required";
+    } else if (!/^\S+@\S+\.\S+$/.test(email)) {
+      errors.email = "Invalid email address";
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      return;
+    }
     try {
-      await setDoc(doc(db, "customers", customerID), {
-        fullName: fullName,
-        phone: phone,
-        address: address,
-        email: email,
-        time: dayDate + "/" + months[monthDate] + "/" + yearDate,
+      await setDoc(doc(db, "customers", customerId), {
+        fullName,
+        phone,
+        address,
+        email,
+        time: `${dayDate}/${months[monthDate]}/${yearDate}`,
       });
-      alert("data has updated sucessfully!");
-      navigate(-1);
+      alert("Customer has been updated successfully!");
+      navigate("/customer");
     } catch (error) {
       console.log(error);
-      alert("something wrong!");
+      alert("Failed to update customer. Please try again later.");
     }
   };
-
   return (
-    <div className="editCustomers">
+    <div className="flex h-screen overflow-hidden">
       <Sidebar />
-      <div className="editCustomersContainer">
+      <div className="flex flex-col flex-1 w-full ml-[233px]">
         <Navbar />
-        <div className="wrapper">
-          <div className="title">Update Customer</div>
-          <div className="wrapper-cols">
-            <div className="wrapper-cols-1"></div>
-            <div className="wrapper-cols-2">
-              <p className="fullName">Full name</p>
-              <input
-                type="text"
-                onChange={(e) => setFullName(e.target.value)}
-                value={fullName}
-              />
-              <p className="phone">Phone</p>
-              <input
-                type="text"
-                onChange={(e) => setPhone(e.target.value)}
-                value={phone}
-              />
-            </div>
-            <div className="wrapper-cols-3">
-              <p className="address">Address</p>
-              <input
-                type="text"
-                onChange={(e) => setAddress(e.target.value)}
-                value={address}
-              />
-              <p className="email">Email</p>
-              <input
-                type="text"
-                onChange={(e) => setEmail(e.target.value)}
-                value={email}
-              />
-            </div>
+        <div className="flex flex-col flex-1 mx-4 my-8 overflow-y-auto bg-white rounded-lg shadow-lg">
+          <div className="text-2xl font-medium text-gray-400 px-6">
+            Update Customer
           </div>
-          <button className="btn-save" onClick={handleUpdate}>
-            Update
-          </button>
+
+          <div className=" px-6 py-4 mt-[6rem]">
+            <form action="" className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="full-name" className="text-gray-800">
+                  Full name
+                </label>
+                <input
+                  type="text"
+                  id="full-name"
+                  className={`block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 py-2 px-3 focus:outline-none ${
+                    formErrors.fullName && "border-red-500"
+                  }`}
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                />
+                {formErrors.fullName && (
+                  <div className="text-red-500 mb-2">{formErrors.fullName}</div>
+                )}
+              </div>
+              <div>
+                <label htmlFor="email" className="text-gray-800">
+                  Email address
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  className={`block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 py-2 px-3 focus:outline-none ${
+                    formErrors.email && "border-red-500"
+                  }`}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                {formErrors.email && (
+                  <div className="text-red-500 mb-2">{formErrors.email}</div>
+                )}
+              </div>
+              <div>
+                <label htmlFor="phone" className="text-gray-800">
+                  Phone number
+                </label>
+                <input
+                  type="text"
+                  id="phone"
+                  className={`block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 py-2 px-3 focus:outline-none ${
+                    formErrors.phone && "border-red-500"
+                  }`}
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                />
+                {formErrors.phone && (
+                  <div className="text-red-500 mb-2">{formErrors.phone}</div>
+                )}
+              </div>
+              <div>
+                <label htmlFor="address" className="text-gray-800">
+                  Address
+                </label>
+                <input
+                  type="text"
+                  id="address"
+                  className={`block w-full border border-gray-300 focus:outline-none rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 py-2 px-3`}
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                />
+              </div>
+              <div className="col-span-2">
+                <button
+                  type="button"
+                  disabled={per !== null}
+                  className="inline-flex items-center px-14 py-3 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:border-indigo-900 focus:shadow-outline-indigo disabled:opacity-25 transition ease-in-out duration-150"
+                  onClick={handleUpdate}
+                >
+                  Update
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
   );
 };
-
 export default EditCustomer;

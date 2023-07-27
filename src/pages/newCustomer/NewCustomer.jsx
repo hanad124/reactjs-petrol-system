@@ -1,16 +1,18 @@
-import "./newCustomer.scss";
 import noImage from "../../assets/no-pictures.png";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
-import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
-import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
-import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { addDoc, collection } from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { db, storage } from "../../firebase";
-import { async } from "@firebase/util";
+import {
+  ModeEditOutlined,
+  RemoveRedEyeOutlined,
+  VisibilityOffOutlined,
+} from "@mui/icons-material";
+
+import Skeleton from "react-loading-skeleton";
 
 const NewCustomer = () => {
   const navigate = useNavigate();
@@ -18,16 +20,16 @@ const NewCustomer = () => {
   const [image, setImage] = useState("");
   const [email, setEmail] = useState("");
   const [fullName, setFullName] = useState("");
+  const [gender, setGender] = useState("male");
   const [phone, setPhone] = useState("");
+  const [age, setAge] = useState("");
   const [address, setAddress] = useState("");
   const [per, setPer] = useState(null);
 
   const date = new Date();
-
   const dayDate = date.getDate();
   const monthDate = date.getMonth() + 1;
   const yearDate = date.getFullYear();
-
   const months = [
     "Jan",
     "Feb",
@@ -43,87 +45,143 @@ const NewCustomer = () => {
     "Dec",
   ];
 
-  useEffect(() => {
-    const uploadFile = () => {
-      const name = new Date().getTime() + file.name;
-      const storageRef = ref(storage, name);
-
-      const uploadTask = uploadBytesResumable(storageRef, file);
-
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          const progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log("Upload is " + progress + "% done");
-          setPer(progress);
-          switch (snapshot.state) {
-            case "paused":
-              console.log("Upload is paused");
-              break;
-            case "running":
-              console.log("Upload is running");
-              break;
-          }
-        },
-        (error) => {
-          console.log(error);
-        },
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            setImage(downloadURL);
-          });
-        }
-      );
-    };
-    file && uploadFile();
-  }, [file]);
+  const [formErrors, setFormErrors] = useState({});
 
   const handleAdd = async () => {
-    await addDoc(collection(db, "customers"), {
-      fullName: fullName,
-      phone: phone,
-      address: address,
-      email: email,
-      time: dayDate + "/" + months[monthDate] + "/" + yearDate,
-    });
+    const errors = {};
 
-    alert("data has added sucessfully!");
-    navigate(-1);
+    // Input validation
+    if (!fullName) {
+      errors.fullName = "Full name is required";
+    }
+
+    if (!phone) {
+      errors.phone = "Phone number is required";
+    } else if (!/^\d{9}$/.test(phone)) {
+      errors.phone = "Invalid phone number";
+    }
+
+    if (!email) {
+      errors.email = "Email is required";
+    } else if (!/^\S+@\S+\.\S+$/.test(email)) {
+      errors.email = "Invalid email address";
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      return;
+    }
+
+    // Add new employee to database
+    try {
+      await addDoc(collection(db, "customers"), {
+        fullName: fullName,
+        phone: phone,
+        // gender: gender,
+        // image: image,
+        // age: age,
+        address: address,
+        email: email,
+        time: `${dayDate}/${months[monthDate]}/${yearDate}`,
+      });
+
+      alert("Data has been added successfully!");
+      navigate(-1);
+    } catch (error) {
+      console.log(error);
+      alert("Failed to add new employee. Please try again later.");
+    }
   };
 
   return (
-    <div className="newSupplier">
+    <div className="flex h-screen overflow-hidden">
       <Sidebar />
-      <div className="newSupplierContainer">
+      <div className="flex flex-col flex-1 w-full ml-[233px]">
         <Navbar />
-        <div className="wrapper">
-          <div className="title">Add New Customer</div>
-          <div className="wrapper-cols">
-            <div className="wrapper-cols-1"></div>
-            <div className="wrapper-cols-2">
-              <p className="fullName">Full name</p>
-              <input
-                type="text"
-                onChange={(e) => setFullName(e.target.value)}
-              />
-              <p className="phone">Phone</p>
-              <input type="text" onChange={(e) => setPhone(e.target.value)} />
-            </div>
-            <div className="wrapper-cols-3">
-              <p className="address">Address</p>
-              <input type="text" onChange={(e) => setAddress(e.target.value)} />
-              <p className="email">Email</p>
-              <input type="text" onChange={(e) => setEmail(e.target.value)} />
-            </div>
+        <div className="flex flex-col flex-1 mx-4 my-8 overflow-y-auto bg-white rounded-lg shadow-lg">
+          <div className="text-2xl font-medium text-gray-400 px-6">
+            New Customer
           </div>
-          <button
-            className="btn-save"
-            onClick={handleAdd}
-            disabled={per !== null && per < 100}
-          >
-            Save
-          </button>
+
+          <div className="px-6 py-4  mt-[6rem]">
+            <form action="" className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="full-name" className="text-gray-800 ">
+                  Full name
+                </label>
+                <input
+                  type="text"
+                  id="full-name"
+                  className={`block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 py-2 px-3 focus:outline-none ${
+                    formErrors.fullName && "border-red-500"
+                  }`}
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                />
+                {formErrors.fullName && (
+                  <div className="text-red-500 mb-2">{formErrors.fullName}</div>
+                )}
+              </div>
+              <div>
+                <label htmlFor="email" className="text-gray-800">
+                  Email address
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  className={`block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 py-2 px-3 focus:outline-none ${
+                    formErrors.phone && "border-red-500"
+                  }`}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                {formErrors.phone && (
+                  <div className="text-red-500 mb-2">{formErrors.phone}</div>
+                )}
+              </div>
+              <div>
+                <label htmlFor="phone" className="text-gray-800">
+                  Phone number
+                </label>
+                <input
+                  type="text"
+                  id="phone"
+                  className={`block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 py-2 px-3 focus:outline-none ${
+                    formErrors.email && "border-red-500"
+                  }`}
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                />
+                {formErrors.email && (
+                  <div className="text-red-500 mb-2">{formErrors.email}</div>
+                )}
+              </div>
+
+              <div>
+                <label htmlFor="address" className="text-gray-800">
+                  Address
+                </label>
+                <input
+                  type="text"
+                  id="address"
+                  className={`block w-full border border-gray-300 focus:outline-none rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 py-2 px-3`}
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                />
+              </div>
+
+              <div className="col-span-2">
+                <button
+                  type="button"
+                  disabled={per !== null}
+                  className="inline-flex items-center px-14 py-3 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:border-indigo-900 focus:shadow-outline-indigo disabled:opacity-25 transition ease-in-out duration-150"
+                  onClick={handleAdd}
+                >
+                  Save
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
