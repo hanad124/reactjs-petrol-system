@@ -58,8 +58,8 @@ const EditSales = () => {
       const tankNum = docSnap.data().fuelTank;
       const salStatus = docSnap.data().status;
 
-      setDefaultCusName(cusNam);
-      setDefaultFuelType(flType);
+      setCustomerName(cusNam);
+      setFuelType(flType);
       setPricePerLitter(perlitt);
       setTotalPrice(totalprc);
       setsalesDate(salDate);
@@ -75,21 +75,21 @@ const EditSales = () => {
   }, []);
 
   // CHECK FUEL PRICE
-  useEffect(() => {
-    if (fuelType === "Bazine") {
-      setPricePerLitter(1.25);
-    } else if (fuelType === "Ethanol") {
-      setPricePerLitter(1);
-    } else if (fuelType === "Gasoline") {
-      setPricePerLitter(0.5);
-    } else if (fuelType === "Kerosene") {
-      setPricePerLitter(0.25);
-    } else if (fuelType === "Diesel Fuel") {
-      setPricePerLitter(1.75);
-    } else {
-      setPricePerLitter("");
-    }
-  }, [fuelType]);
+  // useEffect(() => {
+  //   if (fuelType === "Bazine") {
+  //     setPricePerLitter(1.25);
+  //   } else if (fuelType === "Ethanol") {
+  //     setPricePerLitter(1);
+  //   } else if (fuelType === "Gasoline") {
+  //     setPricePerLitter(0.5);
+  //   } else if (fuelType === "Kerosene") {
+  //     setPricePerLitter(0.25);
+  //   } else if (fuelType === "Diesel Fuel") {
+  //     setPricePerLitter(1.75);
+  //   } else {
+  //     setPricePerLitter("");
+  //   }
+  // }, [fuelType]);
 
   // CALCULATE FUEL TOTAL
   useEffect(() => {
@@ -108,7 +108,7 @@ const EditSales = () => {
 
           setCustomerPhone(supphone);
           setCustomerEmail(supemail);
-          setCustomerName(docSnap.data().name);
+          // setCustomerName(docSnap.data().name);
         } else {
           setError("Customer not found");
         }
@@ -156,7 +156,7 @@ const EditSales = () => {
     fetchData();
   }, [fuelID]);
 
-  console.log("customerName: ", customerName);
+  console.log("fuelTank: ", fuelTank);
   const handleUpdate = async () => {
     try {
       const docRef = doc(db, "sales", exectSalesID);
@@ -187,15 +187,15 @@ const EditSales = () => {
       <div className="w-full ml-[233px]">
         <Navbar />
         <div className="p-4">
-          <h1 className="text-2xl font-bold mb-4">Edit Sales</h1>
+          <h1 className="text-2xl text-slate-500 mb-4">Edit Sales</h1>
           <div className="grid grid-cols-2 gap-4 mb-4">
             <div>
-              <label className="block mb-2 font-bold">Customer Name</label>
+              <label className="block mb-2 text-sm">Customer Name</label>
               <select
                 // defaultValue={defaultValue}
                 name="supp-name"
-                className="supp_name border border-gray-400 p-2 rounded w-full"
-                value={customerName}
+                className="block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 py-2 px-3 focus:outline-none"
+                value={customerID}
                 onChange={(e) => {
                   // setSuppName(e.target.value);
                   // console.log(suppName);
@@ -215,22 +215,27 @@ const EditSales = () => {
               </select>
             </div>
             <div>
-              <label className="block mb-2 font-bold">Fuel Type</label>
+              <label className="block mb-2 text-sm">Fuel Type</label>
               <select
-                className="border border-gray-400 p-2 rounded w-full"
-                value={fuelType}
+                className="block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 py-2 px-3 focus:outline-none"
+                value={fuelID}
                 onChange={(e) => {
                   fuelData.filter((el) => {
                     if (el.id == e.target.value) {
                       setFuelType(el.fuelType);
                       setFuelID(el.id);
+                      setPricePerLitter(el.pricePerLitter);
+                      setFuelTank(el.tankNumber);
                     }
                   });
                 }}
               >
-                <option value={defaultFuelType}>{defaultFuelType}</option>
+                <option value={fuelType}>{fuelType}</option>
                 {fuelData.map((el) => {
-                  fulTempData.push({ id: el.id, fuelType: el.fuelType });
+                  fulTempData.push({
+                    id: el.id,
+                    fuelType: el.fuelType,
+                  });
                   return <option value={el.id}>{el.fuelType}</option>;
                 })}
               </select>
@@ -238,38 +243,39 @@ const EditSales = () => {
           </div>
           <div className="grid grid-cols-2 gap-4 mb-4">
             <div>
-              <label className="block mb-2 font-bold">Litter</label>
+              <label className="block mb-2 text-sm">Litter</label>
               <input
-                className="border border-gray-400 p-2 rounded w-full"
+                className="block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 py-2 px-3 focus:outline-none"
                 type="number"
                 value={litter}
                 onChange={(e) => setLitter(e.target.value)}
               />
             </div>
             <div>
-              <label className="block mb-2 font-bold">Price Per Litter</label>
+              <label className="block mb-2 text-sm">Price Per Litter</label>
               <input
-                className="border border-gray-400 p-2 rounded w-full"
+                className="block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 py-2 px-3 focus:outline-none"
                 type="number"
                 value={pricePerLitter}
+                readOnly
                 onChange={(e) => setPricePerLitter(e.target.value)}
               />
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4 mb-4">
             <div>
-              <label className="block mb-2 font-bold">Total Price</label>
+              <label className="block mb-2 text-sm">Total Price</label>
               <input
-                className="border border-gray-400 p-2 rounded w-full"
+                className="block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 py-2 px-3 focus:outline-none"
                 type="number"
                 value={totalPrice}
                 readOnly
               />
             </div>
             <div>
-              <label className="block mb-2 font-bold">Purchase Date</label>
+              <label className="block mb-2 text-sm">Purchase Date</label>
               <input
-                className="border border-gray-400 p-2 rounded w-full"
+                className="block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 py-2 px-3 focus:outline-none"
                 type="date"
                 value={salesDate}
                 onChange={(e) => setsalesDate(e.target.value)}
@@ -278,18 +284,18 @@ const EditSales = () => {
           </div>
           <div className="grid grid-cols-2 gap-4 mb-4">
             <div>
-              <label className="block mb-2 font-bold">Customer Phone</label>
+              <label className="block mb-2 text-sm">Customer Phone</label>
               <input
-                className="border border-gray-400 p-2 rounded w-full"
+                className="block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 py-2 px-3 focus:outline-none"
                 type="text"
                 value={customerPhone}
                 readOnly
               />
             </div>
             <div>
-              <label className="block mb-2 font-bold">Customer Email</label>
+              <label className="block mb-2 text-sm">Customer Email</label>
               <input
-                className="border border-gray-400 p-2 rounded w-full"
+                className="block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 py-2 px-3 focus:outline-none"
                 type="text"
                 value={customerEmail}
                 readOnly
@@ -298,18 +304,18 @@ const EditSales = () => {
           </div>
           <div className="grid grid-cols-2 gap-4 mb-4">
             <div>
-              <label className="block mb-2 font-bold">Fuel Tank</label>
+              <label className="block mb-2 text-sm">Fuel Tank</label>
               <input
-                className="border border-gray-400 p-2 rounded w-full"
+                className="block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 py-2 px-3 focus:outline-none"
                 type="text"
                 value={fuelTank}
                 readOnly
               />
             </div>
             <div>
-              <label className="block mb-2 font-bold">Status</label>
+              <label className="block mb-2 text-sm">Status</label>
               <select
-                className="border border-gray-400 p-2 rounded w-full"
+                className="block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 py-2 px-3 focus:outline-none"
                 value={status}
                 onChange={(e) => setStatus(e.target.value)}
               >
@@ -323,7 +329,7 @@ const EditSales = () => {
             {" "}
             <p className="text-red-500">{error}</p>{" "}
             <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              className="bg-blue-500 hover:bg-blue-700 text-white text-sm py-2 px-4 rounded"
               onClick={handleUpdate}
             >
               {" "}

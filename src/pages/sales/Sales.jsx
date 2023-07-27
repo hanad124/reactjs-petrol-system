@@ -149,11 +149,16 @@ export const SalesData = ({ buttons }) => {
   };
 
   const handleDelete = async (id) => {
-    try {
-      await deleteDoc(doc(db, "sales", id));
-      setData(data.filter((item) => item.id !== id));
-    } catch (error) {
-      console.log(error);
+    const confirmed = confirm(
+      "Are you sure you want to delete this transection?"
+    );
+    if (confirmed) {
+      try {
+        await deleteDoc(doc(db, "sales", id));
+        setData(data.filter((item) => item.id !== id));
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -179,7 +184,7 @@ export const SalesData = ({ buttons }) => {
               </div>
             </Link>
             <div
-              className="py-[2px] px-3 rounded-md text-red-600 border-[1px] border-solid border-red-600"
+              className="py-[2px] px-3 rounded-md text-red-600 border-[1px] border-solid border-red-600 cursor-pointer"
               onClick={() => handleDelete(params.row.id)}
             >
               Delete
