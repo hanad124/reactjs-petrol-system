@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useContext, useRef } from "react";
 import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "../../../firebase";
+import { PurchaseData } from "../../purchase/Purchase";
 
 const userColumns = [
   // { field: "id", headerName: "ID", width: 70 },
@@ -92,7 +93,6 @@ const PurRepView = React.forwardRef((props, ref) => {
     };
   }, []);
 
-  
   const date = new Date();
 
   const dayDate = date.getDate();
@@ -124,16 +124,14 @@ const PurRepView = React.forwardRef((props, ref) => {
               SINAY PETROLEUM
             </div>
             <p className="report_type">Purchase Report</p>
-            <p className="report_date">Report Date: <span>{ dayDate + " - " + months[monthDate] + " - " + yearDate}</span> </p>
+            <p className="report_date">
+              Report Date:{" "}
+              <span>
+                {dayDate + " - " + months[monthDate] + " - " + yearDate}
+              </span>{" "}
+            </p>
           </div>
-          <DataGrid
-            className="reportDatagrid"
-            rows={data}
-            columns={userColumns}
-            pageSize={23}
-            rowsPerPageOptions={[9]}
-            // checkboxSelection
-          />
+          <PurchaseData buttons={false} />
         </div>
       </div>
     </div>

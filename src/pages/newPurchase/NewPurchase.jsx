@@ -271,11 +271,11 @@ const NewPurchase = () => {
         <Navbar />
         <div className="container mx-auto mt-10  lg:px-7">
           <div className="text-2xl font-medium text-gray-900 mb-6">
-            Add New sales
+            Add New Purchase
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2  gap-4 mr-[10rem] mb-8">
             <div className="flex flex-col">
-              <label className="block mb-2 text-sm">Customer Name</label>
+              <label className="block mb-2 text-sm">Supplier Name</label>
               <select
                 // defaultValue={defaultValue}
                 name="cust-name"

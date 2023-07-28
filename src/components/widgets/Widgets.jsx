@@ -118,7 +118,9 @@ const Widget = ({ type }) => {
           for (let i = 0; i <= list.length; i++) {
             sum += list[i];
             {
-              sum ? setPurchase(sum) : "";
+              const num = sum;
+              const formattedNum = formatNumber(num);
+              sum ? setPurchase(formattedNum) : "";
             }
           }
         });

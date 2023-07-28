@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useContext, useRef } from "react";
 import * as React from "react";
+import { PurchaseData } from "../../purchase/Purchase";
 
 import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "../../../firebase";
@@ -121,14 +122,7 @@ const Purchase = () => {
               Print Report
             </div>
           </div>
-          <DataGrid
-            className="datagrid"
-            rows={data}
-            columns={userColumns}
-            pageSize={5}
-            rowsPerPageOptions={[9]}
-            // checkboxSelection
-          />
+          <PurchaseData buttons={false} />
         </div>
       </div>
     </div>

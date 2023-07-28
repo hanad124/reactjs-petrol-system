@@ -6,6 +6,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
+import React from "react";
 import {
   collection,
   getDocs,
@@ -23,13 +24,13 @@ const userColumns = [
   {
     field: "suppName",
     headerName: "Name",
-    width: 210,
+    width: 180,
   },
 
   {
     field: "suppPhone",
     headerName: "Phone",
-    width: 140,
+    width: 100,
   },
 
   {
@@ -60,7 +61,7 @@ const userColumns = [
   {
     field: "perchaseDate",
     headerName: "Date",
-    width: 120,
+    width: 110,
   },
 ];
 
