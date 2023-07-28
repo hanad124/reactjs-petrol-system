@@ -26,6 +26,8 @@ import EditPurchase from "./pages/editPurchase/EditPurchase";
 import EditCustomer from "./pages/editCustomer/EditCustomer";
 import PurchaseReport from "./pages/reports/purchaseReport/PurchaseReport";
 import ReportView from "./pages/reports/purReportView/PurRepView";
+import SalesReport from "./pages/reports/salesReport/SalesReport";
+import SalesReportView from "./pages/reports/salesReportView/salesRepView";
 import EditSales from "./pages/editSales/EditSales";
 import ForgotPassword from "./pages/forgotPassword/ForgotPassword";
 
@@ -277,6 +279,22 @@ const App = () => {
                           element={
                             <RequireAuth>
                               <ReportView />
+                            </RequireAuth>
+                          }
+                        />
+                        <Route
+                          path="/salesReport"
+                          element={
+                            <RequireAuth>
+                              <SalesReport />
+                            </RequireAuth>
+                          }
+                        />
+                        <Route
+                          path="/sales-reportview"
+                          element={
+                            <RequireAuth>
+                              <SalesReportView />
                             </RequireAuth>
                           }
                         />

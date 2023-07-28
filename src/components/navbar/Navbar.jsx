@@ -17,9 +17,10 @@ const Navbar = () => {
     let h = today.getHours();
     let m = today.getMinutes();
     let s = today.getSeconds();
+    let ampm = h >= 12 ? "PM" : "AM"; // determine if it's AM or PM
     m = checkTime(m);
     s = checkTime(s);
-    setClockTime(h + ":" + m + ":" + s);
+    setClockTime(h + ":" + m + ":" + s + "  " + ampm);
   };
   setTimeout(startTime, 1000);
 
@@ -29,6 +30,19 @@ const Navbar = () => {
     } // add zero in front of numbers < 10
     return i;
   }
+
+  //  const startTime = () => {
+  //   const today = new Date();
+  //   let h = today.getHours();
+  //   let m = today.getMinutes();
+  //   let s = today.getSeconds();
+  //   let ampm = h >= 12 ? "PM" : "AM"; // determine if it's AM or PM
+  //   h = h % 12; // convert to 12-hour format
+  //   h = h ? h : 12; // "0" should be "12"
+  //   m = checkTime(m);
+  //   s = checkTime(s);
+  //   setClockTime(h + ":" + m + ":" + s + " " + ampm);
+  // };
 
   const showaccount = () => {
     if (clicked) {

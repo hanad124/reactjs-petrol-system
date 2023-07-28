@@ -36,7 +36,7 @@ const Sidebar = () => {
   const handleClick = (event, path) => {
     event.preventDefault();
     navigate(path);
-  }
+  };
 
   return (
     <div className="sidebar">
@@ -46,49 +46,73 @@ const Sidebar = () => {
       <div className="seprator"></div>
       <ul className="list">
         <Link to="/">
-          <li className={`${location.pathname === "/" ? "active" : ""}`} onClick={(event) => handleClick(event, "/")}>
+          <li
+            className={`${location.pathname === "/" ? "active" : ""}`}
+            onClick={(event) => handleClick(event, "/")}
+          >
             <DashboardIcon className="icon" />
             <span>Dashaord</span>
           </li>
         </Link>
         <Link to="/employees" className={`${access ? "" : "hideItem"}`}>
-          <li className={`${location.pathname === "/employees" ? "active" : ""}`} onClick={(event) => handleClick(event, "/employees")}>
+          <li
+            className={`${location.pathname === "/employees" ? "active" : ""}`}
+            onClick={(event) => handleClick(event, "/employees")}
+          >
             <PersonOutlineOutlinedIcon className="icon" />
             <span>Employee</span>
           </li>
         </Link>
         <Link to="/supplier">
-          <li className={`${location.pathname === "/supplier" ? "active" : ""}`} onClick={(event) => handleClick(event, "/supplier")}>
+          <li
+            className={`${location.pathname === "/supplier" ? "active" : ""}`}
+            onClick={(event) => handleClick(event, "/supplier")}
+          >
             <PersonPinOutlinedIcon className="icon" />
             <span>Supplier</span>
           </li>
         </Link>{" "}
         <Link to="/fuel">
-          <li className={`${location.pathname === "/fuel" ? "active" : ""}`} onClick={(event) => handleClick(event, "/fuel")}>
+          <li
+            className={`${location.pathname === "/fuel" ? "active" : ""}`}
+            onClick={(event) => handleClick(event, "/fuel")}
+          >
             <LocalGasStationOutlinedIcon className="icon" />
             <span>Fuel</span>
           </li>{" "}
         </Link>{" "}
         <Link to="/purchase">
-          <li className={`${location.pathname === "/purchase" ? "active" : ""}`} onClick={(event) => handleClick(event, "/purchase")}>
+          <li
+            className={`${location.pathname === "/purchase" ? "active" : ""}`}
+            onClick={(event) => handleClick(event, "/purchase")}
+          >
             <ShoppingBasketOutlinedIcon className="icon" />
             <span>Purchase</span>
           </li>{" "}
         </Link>{" "}
         <Link to="/customer">
-          <li className={`${location.pathname === "/customer" ? "active" : ""}`} onClick={(event) => handleClick(event, "/customer")}>
+          <li
+            className={`${location.pathname === "/customer" ? "active" : ""}`}
+            onClick={(event) => handleClick(event, "/customer")}
+          >
             <SupportAgentOutlinedIcon className="icon" />
             <span>Customer</span>
           </li>
         </Link>
         <Link to="/sales">
-          <li className={`${location.pathname === "/sales" ? "active" : ""}`} onClick={(event) => handleClick(event, "/sales")}>
+          <li
+            className={`${location.pathname === "/sales" ? "active" : ""}`}
+            onClick={(event) => handleClick(event, "/sales")}
+          >
             <MonetizationOnOutlinedIcon className="icon" />
             <span>Sales</span>
           </li>
         </Link>{" "}
         <Link to="/users" className={`${access ? "" : "hideItem"}`}>
-          <li className={`${location.pathname === "/users" ? "active" : ""}`} onClick={(event) => handleClick(event, "/users")}>
+          <li
+            className={`${location.pathname === "/users" ? "active" : ""}`}
+            onClick={(event) => handleClick(event, "/users")}
+          >
             <AccountCircleOutlinedIcon className="icon" />
             <span>Users</span>
           </li>
@@ -113,10 +137,12 @@ const Sidebar = () => {
             <span>Purchase report</span>
           </li>
         </Link>
-        <li className={`sub_rep ${showReports ? "show-sub_rep" : ""}`}>
-          <SummarizeOutlinedIcon className="icon" />
-          <span>Sales report</span>
-        </li>
+        <Link to="/salesReport">
+          <li className={`sub_rep ${showReports ? "show-sub_rep" : ""}`}>
+            <SummarizeOutlinedIcon className="icon" />
+            <span>Sales report</span>
+          </li>
+        </Link>
         <Link to="/login">
           <li
             onClick={() => {
