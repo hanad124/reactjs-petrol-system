@@ -339,7 +339,7 @@ const NewSales = () => {
                 Litters
               </label>
               <input
-                type="text"
+                type="number"
                 id="fuelType"
                 className={`block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 py-2 px-3 focus:outline-none ${
                   errors["litter"] ? "border-red-500" : ""
