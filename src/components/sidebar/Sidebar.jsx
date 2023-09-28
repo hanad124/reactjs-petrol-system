@@ -45,9 +45,9 @@ const Sidebar = () => {
       </Link>
       <div className="seprator"></div>
       <ul className="list">
-        <Link to="/">
+        <Link to="/" className={`${access ? "" : "hideItem"}`}>
           <li
-            className={`${location.pathname === "/" ? "active" : ""}`}
+            className={`${location.pathname === "/" ? "active" : ""} `}
             onClick={(event) => handleClick(event, "/")}
           >
             <DashboardIcon className="icon" />
@@ -63,7 +63,7 @@ const Sidebar = () => {
             <span>Employee</span>
           </li>
         </Link>
-        <Link to="/supplier">
+        <Link to="/supplier" className={`${access ? "" : "hideItem"}`}>
           <li
             className={`${location.pathname === "/supplier" ? "active" : ""}`}
             onClick={(event) => handleClick(event, "/supplier")}
@@ -72,7 +72,7 @@ const Sidebar = () => {
             <span>Supplier</span>
           </li>
         </Link>{" "}
-        <Link to="/fuel">
+        <Link to="/fuel" className={`${access ? "" : "hideItem"}`}>
           <li
             className={`${location.pathname === "/fuel" ? "active" : ""}`}
             onClick={(event) => handleClick(event, "/fuel")}
@@ -81,7 +81,7 @@ const Sidebar = () => {
             <span>Fuel</span>
           </li>{" "}
         </Link>{" "}
-        <Link to="/purchase">
+        <Link to="/purchase" className={`${access ? "" : "hideItem"}`}>
           <li
             className={`${location.pathname === "/purchase" ? "active" : ""}`}
             onClick={(event) => handleClick(event, "/purchase")}
@@ -117,20 +117,22 @@ const Sidebar = () => {
             <span>Users</span>
           </li>
         </Link>
-        <li
-          className="reports"
-          onClick={() => {
-            !showReports ? setShowReports(true) : setShowReports(false);
-          }}
-        >
-          <SummarizeOutlinedIcon className="icon" />
-          <div className="main-rep ">
-            <span>Reports</span>
-          </div>
-          <KeyboardArrowDownOutlinedIcon
-            className={`"icon arrow " ${showReports ? "rotate" : ""}`}
-          />
-        </li>
+        <div className={`reports ${access ? "" : "hideItem"}`}>
+          <li
+            className={`reports ${access ? "" : "hideItem"}`}
+            onClick={() => {
+              !showReports ? setShowReports(true) : setShowReports(false);
+            }}
+          >
+            <SummarizeOutlinedIcon className="icon" />
+            <div className="main-rep ">
+              <span>Reports</span>
+            </div>
+            <KeyboardArrowDownOutlinedIcon
+              className={`"icon arrow " ${showReports ? "rotate" : ""}`}
+            />
+          </li>
+        </div>
         <Link to="/purchaseReport">
           <li className={`sub_rep ${showReports ? "show-sub_rep" : ""}`}>
             <SummarizeOutlinedIcon className="icon" />
