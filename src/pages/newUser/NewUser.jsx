@@ -128,9 +128,7 @@ const NewUser = () => {
 
   return (
     <div className="flex">
-      <Sidebar />
-      <div className="flex flex-col flex-1 w-full ml-[233px]">
-        <Navbar />
+      <div className="flex flex-col flex-1 w-full ">
         <div className="px-6 py-4 flex-grow">
           <div className="text-lg font-medium mb-6">Add New User</div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

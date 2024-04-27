@@ -72,9 +72,7 @@ const NewUser = () => {
   }
   return (
     <div className="flex">
-      <Sidebar className="" />
-      <div className="flex flex-col flex-1 w-full  ml-[233px]">
-        <Navbar />
+      <div className="flex flex-col flex-1 w-full ">
         <div className="flex flex-col items-center justify-center flex-1 w-full py-8 ">
           <div className="bg-white rounded-lg border border-[#e6e8ec] shadow-sm w-[37rem] p-6">
             {" "}

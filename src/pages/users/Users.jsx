@@ -1,6 +1,5 @@
 import "./users.scss";
-import Sidebar from "../../components/sidebar/Sidebar";
-import Navbar from "../../components/navbar/Navbar";
+
 import EditUserContext from "../../context/EditUserContext";
 import { DataGrid } from "@mui/x-data-grid";
 import { Link } from "react-router-dom";
@@ -171,32 +170,28 @@ const Users = () => {
 
   return (
     <div className="users">
-      <Sidebar />
-      <div className="usersContainer">
-        <Navbar />
-        <div className="datatable">
-          <div className="datatableTitle">
-            Users
-            <div
-              className="link"
-              onClick={() => {
-                navigate("/users/new-user");
-                localStorage.removeItem("userID");
-                setEditUser("");
-              }}
-            >
-              Add New
-            </div>
+      <div className="datatable">
+        <div className="datatableTitle">
+          Users
+          <div
+            className="link"
+            onClick={() => {
+              navigate("/users/new-user");
+              localStorage.removeItem("userID");
+              setEditUser("");
+            }}
+          >
+            Add New
           </div>
-          <DataGrid
-            className="datagrid"
-            rows={data}
-            columns={userColumns.concat(actionColumn)}
-            pageSize={9}
-            rowsPerPageOptions={[9]}
-            // checkboxSelection
-          />
         </div>
+        <DataGrid
+          className="datagrid"
+          rows={data}
+          columns={userColumns.concat(actionColumn)}
+          pageSize={9}
+          rowsPerPageOptions={[9]}
+          // checkboxSelection
+        />
       </div>
     </div>
   );

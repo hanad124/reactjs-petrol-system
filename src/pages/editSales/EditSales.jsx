@@ -74,23 +74,6 @@ const EditSales = () => {
     fetchData();
   }, []);
 
-  // CHECK FUEL PRICE
-  // useEffect(() => {
-  //   if (fuelType === "Bazine") {
-  //     setPricePerLitter(1.25);
-  //   } else if (fuelType === "Ethanol") {
-  //     setPricePerLitter(1);
-  //   } else if (fuelType === "Gasoline") {
-  //     setPricePerLitter(0.5);
-  //   } else if (fuelType === "Kerosene") {
-  //     setPricePerLitter(0.25);
-  //   } else if (fuelType === "Diesel Fuel") {
-  //     setPricePerLitter(1.75);
-  //   } else {
-  //     setPricePerLitter("");
-  //   }
-  // }, [fuelType]);
-
   // CALCULATE FUEL TOTAL
   useEffect(() => {
     setTotalPrice(litter * pricePerLitter);
@@ -156,7 +139,6 @@ const EditSales = () => {
     fetchData();
   }, [fuelID]);
 
-  console.log("fuelTank: ", fuelTank);
   const handleUpdate = async () => {
     try {
       const docRef = doc(db, "sales", exectSalesID);
@@ -183,9 +165,7 @@ const EditSales = () => {
 
   return (
     <div className="flex">
-      <Sidebar />
-      <div className="w-full ml-[233px]">
-        <Navbar />
+      <div className="w-full ">
         <div className="p-4">
           <h1 className="text-2xl text-slate-500 mb-4">Edit Sales</h1>
           <div className="grid grid-cols-2 gap-4 mb-4">

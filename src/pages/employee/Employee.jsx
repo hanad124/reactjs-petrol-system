@@ -155,34 +155,30 @@ const Employee = () => {
   ];
 
   return (
-    <div className="employees">
-      <Sidebar />
-      <div className="employeesContainer">
-        <Navbar />
-        <div className="datatable">
-          <div className="datatableTitle">
-            Employees
-            <div
-              className="link"
-              onClick={() => {
-                navigate("/employees/new-employee");
-                localStorage.removeItem("userID");
-                setEditUser("");
-              }}
-            >
-              Add New
-            </div>
+    <div className="employees w-full bg-white">
+      <div className="datatable ">
+        <div className="datatableTitle">
+          Employees
+          <div
+            className="link"
+            onClick={() => {
+              navigate("/employees/new-employee");
+              localStorage.removeItem("userID");
+              setEditUser("");
+            }}
+          >
+            Add New
           </div>
-          <SkeletonTheme baseColor="#202020" highlightColor="#444">
-            <DataGrid
-              className="datagrid"
-              rows={data}
-              columns={userColumns.concat(actionColumn)}
-              pageSize={9}
-              rowsPerPageOptions={[9]}
-            />
-          </SkeletonTheme>
         </div>
+        <SkeletonTheme baseColor="#202020" highlightColor="#444">
+          <DataGrid
+            className="datagrid md:max-w-[100%]"
+            rows={data}
+            columns={userColumns.concat(actionColumn)}
+            pageSize={9}
+            rowsPerPageOptions={[9]}
+          />
+        </SkeletonTheme>
       </div>
     </div>
   );

@@ -108,22 +108,18 @@ const Sales = () => {
 
   return (
     <div className="purchaseReport">
-      <Sidebar />
-      <div className="purchaseReportContainer">
-        <Navbar />
-        <div className="print-component">
-          <SalesReview ref={componentRef} />
-        </div>
-        <div className="datatable">
-          <div className="datatableTitle">
-            Sales Report
-            <div className="link" onClick={handlePrint}>
-              <LocalPrintshopOutlinedIcon className="print-icon" />
-              Print Report
-            </div>
+      <div className="print-component">
+        <SalesReview ref={componentRef} />
+      </div>
+      <div className="datatable">
+        <div className="datatableTitle">
+          Sales Report
+          <div className="link" onClick={handlePrint}>
+            <LocalPrintshopOutlinedIcon className="print-icon" />
+            Print Report
           </div>
-          <SalesData buttons={false} />
         </div>
+        <SalesData buttons={false} />
       </div>
     </div>
   );

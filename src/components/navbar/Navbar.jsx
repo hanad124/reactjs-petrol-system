@@ -69,42 +69,39 @@ const Navbar = () => {
   };
 
   return (
-    <div className="navbar">
-      <div className="wrapper">
-        <div className="search">
-          <input type="text" placeholder="search..." />
-          <SearchOutlinedIcon className="icon" />
-        </div>
-        <div className="time">{clockTime}</div>
-        <div className="items">
-          <div className="item">
-            <div className="account">
-              <div className="roll">{roll}</div>
-              <div className="name">{name}</div>
-            </div>
-            <img
-              src={image}
-              alt=""
-              className={`avatar ${clicked ? "active" : ""}`}
-              onClick={showaccount}
-            />
-            <div className={`account_popup ${clicked ? "show" : ""}`}>
-              <Link to="/users/single-user">
-                <div
-                  className="userAccount"
-                  style={{ color: "#555555" }}
-                  onClick={AccountClick}
-                >
-                  <AccountCircleOutlinedIcon className=" icon sitting-icon" />
-                  <p>Account</p>
-                </div>
-              </Link>
-              <Link to="/login">
-                <div className="logout" onClick={handleLogout}>
-                  <LogoutOutlinedIcon className="icon logout-icon" />
-                  <p>Logout</p>
-                </div>
-              </Link>
+    <div className="flex items-center justify-end gap-x-5 w-full">
+      <div className="flex items-center dark:text-slate-400 ">
+        <div className="flex items-center dark:text-slate-400 rounded-md ">
+          <div className="items">
+            <div className="item">
+              <div className="account">
+                <div className="roll">{roll}</div>
+                <div className="name">{name}</div>
+              </div>
+              <img
+                src={image}
+                alt=""
+                className={`avatar ${clicked ? "active" : ""}`}
+                onClick={showaccount}
+              />
+              <div className={`account_popup ${clicked ? "show" : ""}`}>
+                <Link to="/users/single-user">
+                  <div
+                    className="userAccount"
+                    style={{ color: "#555555" }}
+                    onClick={AccountClick}
+                  >
+                    <AccountCircleOutlinedIcon className=" icon sitting-icon" />
+                    <p>Account</p>
+                  </div>
+                </Link>
+                <Link to="/login">
+                  <div className="logout" onClick={handleLogout}>
+                    <LogoutOutlinedIcon className="icon logout-icon" />
+                    <p>Logout</p>
+                  </div>
+                </Link>
+              </div>
             </div>
           </div>
         </div>

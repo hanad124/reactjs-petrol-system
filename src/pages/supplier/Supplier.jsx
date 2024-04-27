@@ -1,7 +1,5 @@
 import "./supplier.scss";
 
-import Sidebar from "../../components/sidebar/Sidebar";
-import Navbar from "../../components/navbar/Navbar";
 import SupplierContext from "../../context/SupplierContext";
 import { DataGrid } from "@mui/x-data-grid";
 import { Link } from "react-router-dom";
@@ -132,32 +130,28 @@ const Supplier = () => {
   ];
   return (
     <div className="supplier">
-      <Sidebar />
-      <div className="supplierContainer">
-        <Navbar />
-        <div className="datatable">
-          <div className="datatableTitle">
-            Suppliers
-            <div
-              className="link"
-              onClick={() => {
-                navigate("/supplier/new-supplier");
-                // localStorage.removeItem("userID");
-                setEditUser("");
-              }}
-            >
-              Add New
-            </div>
+      <div className="datatable">
+        <div className="datatableTitle">
+          Suppliers
+          <div
+            className="link"
+            onClick={() => {
+              navigate("/supplier/new-supplier");
+              // localStorage.removeItem("userID");
+              setEditUser("");
+            }}
+          >
+            Add New
           </div>
-          <DataGrid
-            className="datagrid"
-            rows={data}
-            columns={userColumns.concat(actionColumn)}
-            pageSize={9}
-            rowsPerPageOptions={[9]}
-            // checkboxSelection
-          />
         </div>
+        <DataGrid
+          className="datagrid"
+          rows={data}
+          columns={userColumns.concat(actionColumn)}
+          pageSize={9}
+          rowsPerPageOptions={[9]}
+          // checkboxSelection
+        />
       </div>
     </div>
   );

@@ -1,6 +1,5 @@
 import "./purchase.scss";
-import Sidebar from "../../components/sidebar/Sidebar";
-import Navbar from "../../components/navbar/Navbar";
+
 import PurchaseContext from "../../context/PurchaseContext";
 import { DataGrid } from "@mui/x-data-grid";
 import { Link } from "react-router-dom";
@@ -69,26 +68,22 @@ const Purchase = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="sales">
-      <Sidebar />
-      <div className="salesContainer">
-        <Navbar />
-        <div className="datatable">
-          <div className="datatableTitle ">
-            Purchase
-            <div
-              className="link"
-              onClick={() => {
-                navigate("/purchase/new-purchase");
-              }}
-            >
-              Add New
-            </div>
+    <div className="purchase">
+      <div className="datatable">
+        <div className="datatableTitle ">
+          Purchase
+          <div
+            className="link"
+            onClick={() => {
+              navigate("/purchase/new-purchase");
+            }}
+          >
+            Add New
           </div>
         </div>
-        <div className="h-screen mx-[1rem]">
-          <PurchaseData buttons={true} />
-        </div>
+      </div>
+      <div className="h-screen mx-[1rem]">
+        <PurchaseData buttons={true} />
       </div>
     </div>
   );

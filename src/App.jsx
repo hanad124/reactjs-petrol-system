@@ -40,6 +40,7 @@ import CustomerContext from "./context/CustomerContext";
 import { AuthContext } from "./context/AuthContext";
 
 import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
+import Layout from "./components/Layout";
 
 const App = () => {
   const { currentUser } = useContext(AuthContext);
@@ -85,7 +86,9 @@ const App = () => {
                             index
                             element={
                               <RequireAuth>
-                                <Employee />
+                                <Layout>
+                                  <Employee />
+                                </Layout>
                               </RequireAuth>
                             }
                           />
@@ -94,7 +97,9 @@ const App = () => {
                           path="/employees/single-employee"
                           element={
                             <RequireAuth>
-                              <SinglEmployee />
+                              <Layout>
+                                <SinglEmployee />
+                              </Layout>
                             </RequireAuth>
                           }
                         />
@@ -102,7 +107,9 @@ const App = () => {
                           path="/employees/new-employee"
                           element={
                             <RequireAuth>
-                              <NewEmployee />
+                              <Layout>
+                                <NewEmployee />
+                              </Layout>
                             </RequireAuth>
                           }
                         />
@@ -110,7 +117,9 @@ const App = () => {
                           path="/employees/edit-employee"
                           element={
                             <RequireAuth>
-                              <EditEmployee />
+                              <Layout>
+                                <EditEmployee />
+                              </Layout>
                             </RequireAuth>
                           }
                         />
@@ -118,7 +127,9 @@ const App = () => {
                           path="/supplier"
                           element={
                             <RequireAuth>
-                              <Supplier />
+                              <Layout>
+                                <Supplier />
+                              </Layout>
                             </RequireAuth>
                           }
                         />
@@ -126,7 +137,9 @@ const App = () => {
                           path="/supplier/new-supplier"
                           element={
                             <RequireAuth>
-                              <NewSupplier />
+                              <Layout>
+                                <NewSupplier />
+                              </Layout>
                             </RequireAuth>
                           }
                         />
@@ -134,7 +147,9 @@ const App = () => {
                           path="/supplier/edit-supplier"
                           element={
                             <RequireAuth>
-                              <EditSupplier />
+                              <Layout>
+                                <EditSupplier />
+                              </Layout>
                             </RequireAuth>
                           }
                         />
@@ -142,7 +157,9 @@ const App = () => {
                           path="/fuel"
                           element={
                             <RequireAuth>
-                              <Fuel />
+                              <Layout>
+                                <Fuel />
+                              </Layout>
                             </RequireAuth>
                           }
                         />
@@ -150,7 +167,9 @@ const App = () => {
                           path="/fuel/new-fuel"
                           element={
                             <RequireAuth>
-                              <NewFuel />
+                              <Layout>
+                                <NewFuel />
+                              </Layout>
                             </RequireAuth>
                           }
                         />
@@ -158,7 +177,9 @@ const App = () => {
                           path="/fuel/edit-fuel"
                           element={
                             <RequireAuth>
-                              <EditFuel />
+                              <Layout>
+                                <EditFuel />
+                              </Layout>
                             </RequireAuth>
                           }
                         />
@@ -166,7 +187,9 @@ const App = () => {
                           path="/purchase"
                           element={
                             <RequireAuth>
-                              <Purchase />
+                              <Layout>
+                                <Purchase />
+                              </Layout>
                             </RequireAuth>
                           }
                         />
@@ -174,7 +197,9 @@ const App = () => {
                           path="/purchase/edit-purchase"
                           element={
                             <RequireAuth>
-                              <EditPurchase />
+                              <Layout>
+                                <EditPurchase />
+                              </Layout>
                             </RequireAuth>
                           }
                         />
@@ -182,7 +207,9 @@ const App = () => {
                           path="/purchase/new-purchase"
                           element={
                             <RequireAuth>
-                              <NewPurchase />
+                              <Layout>
+                                <NewPurchase />
+                              </Layout>
                             </RequireAuth>
                           }
                         />
@@ -190,7 +217,9 @@ const App = () => {
                           path="/customer"
                           element={
                             <RequireAuth>
-                              <Customer />
+                              <Layout>
+                                <Customer />
+                              </Layout>
                             </RequireAuth>
                           }
                         />
@@ -198,7 +227,9 @@ const App = () => {
                           path="/customer/new-customer"
                           element={
                             <RequireAuth>
-                              <NewCustomer />
+                              <Layout>
+                                <NewCustomer />
+                              </Layout>
                             </RequireAuth>
                           }
                         />
@@ -206,7 +237,9 @@ const App = () => {
                           path="/customers/edit-customer"
                           element={
                             <RequireAuth>
-                              <EditCustomer />
+                              <Layout>
+                                <EditCustomer />
+                              </Layout>
                             </RequireAuth>
                           }
                         />
@@ -214,7 +247,9 @@ const App = () => {
                           path="/sales"
                           element={
                             <RequireAuth>
-                              <Sales />
+                              <Layout>
+                                <Sales />
+                              </Layout>
                             </RequireAuth>
                           }
                         />
@@ -222,7 +257,9 @@ const App = () => {
                           path="/sales/new-sales"
                           element={
                             <RequireAuth>
-                              <NewSales />
+                              <Layout>
+                                <NewSales />
+                              </Layout>
                             </RequireAuth>
                           }
                         />
@@ -230,7 +267,9 @@ const App = () => {
                           path="/sales/edit-sales"
                           element={
                             <RequireAuth>
-                              <EditSales />
+                              <Layout>
+                                <EditSales />
+                              </Layout>
                             </RequireAuth>
                           }
                         />
@@ -238,7 +277,9 @@ const App = () => {
                           path="/users"
                           element={
                             <RequireAuth>
-                              <Users />
+                              <Layout>
+                                <Users />
+                              </Layout>
                             </RequireAuth>
                           }
                         />
@@ -246,7 +287,9 @@ const App = () => {
                           path="/users/new-user"
                           element={
                             <RequireAuth>
-                              <NewUser />
+                              <Layout>
+                                <NewUser />
+                              </Layout>
                             </RequireAuth>
                           }
                         />
@@ -254,7 +297,9 @@ const App = () => {
                           path="/users/edit-user"
                           element={
                             <RequireAuth>
-                              <EditUser />
+                              <Layout>
+                                <EditUser />
+                              </Layout>
                             </RequireAuth>
                           }
                         />
@@ -262,7 +307,9 @@ const App = () => {
                           path="/users/single-user"
                           element={
                             <RequireAuth>
-                              <SingleUser />
+                              <Layout>
+                                <SingleUser />
+                              </Layout>
                             </RequireAuth>
                           }
                         />
@@ -270,7 +317,9 @@ const App = () => {
                           path="/purchaseReport"
                           element={
                             <RequireAuth>
-                              <PurchaseReport />
+                              <Layout>
+                                <PurchaseReport />
+                              </Layout>
                             </RequireAuth>
                           }
                         />
@@ -278,7 +327,9 @@ const App = () => {
                           path="/reportview"
                           element={
                             <RequireAuth>
-                              <ReportView />
+                              <Layout>
+                                <ReportView />
+                              </Layout>
                             </RequireAuth>
                           }
                         />
@@ -286,7 +337,9 @@ const App = () => {
                           path="/salesReport"
                           element={
                             <RequireAuth>
-                              <SalesReport />
+                              <Layout>
+                                <SalesReport />
+                              </Layout>
                             </RequireAuth>
                           }
                         />
@@ -294,7 +347,9 @@ const App = () => {
                           path="/sales-reportview"
                           element={
                             <RequireAuth>
-                              <SalesReportView />
+                              <Layout>
+                                <SalesReportView />
+                              </Layout>
                             </RequireAuth>
                           }
                         />

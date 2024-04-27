@@ -69,25 +69,21 @@ const Sales = () => {
 
   return (
     <div className="sales">
-      <Sidebar />
-      <div className="salesContainer">
-        <Navbar />
-        <div className="datatable">
-          <div className="datatableTitle ">
-            Sales
-            <div
-              className="link"
-              onClick={() => {
-                navigate("/sales/new-sales");
-              }}
-            >
-              Add New
-            </div>
+      <div className="datatable">
+        <div className="datatableTitle ">
+          Sales
+          <div
+            className="link"
+            onClick={() => {
+              navigate("/sales/new-sales");
+            }}
+          >
+            Add New
           </div>
         </div>
-        <div className="h-screen mx-[1rem]">
-          <SalesData buttons={true} />
-        </div>
+      </div>
+      <div className="h-screen mx-[1rem]">
+        <SalesData buttons={true} />
       </div>
     </div>
   );

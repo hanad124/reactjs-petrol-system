@@ -132,9 +132,7 @@ const NewEmployee = () => {
 
   return (
     <div className="flex h-screen overflow-hidden">
-      <Sidebar />
-      <div className="flex flex-col flex-1 w-full ml-[233px]">
-        <Navbar />
+      <div className="flex flex-col flex-1 w-full">
         <div className="flex flex-col flex-1 mx-4 my-8 overflow-y-auto bg-white rounded-lg shadow-lg">
           <div className="text-2xl font-medium text-gray-400 px-6">
             New Supplier

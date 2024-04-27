@@ -15,9 +15,13 @@ import { useState, useContext, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
+import { paths } from "../../dataSource";
+
 const Sidebar = () => {
   const [showReports, setShowReports] = useState(false);
   const [access, setAccess] = useState(false);
+  const [activePath, setActivePath] = useState(window.location.pathname);
+
   // active sidebar hooks
 
   const roll = JSON.parse(localStorage.getItem("roll"));
@@ -33,129 +37,54 @@ const Sidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const handleClick = (event, path) => {
-    event.preventDefault();
+  // const handleClick = (event, path) => {
+  //   event.preventDefault();
+  //   navigate(path);
+  // };
+
+  useEffect(() => {
+    const handlePathChange = () => {
+      setActivePath(window.location.pathname);
+    };
+
+    window.addEventListener("popstate", handlePathChange);
+
+    return () => {
+      window.removeEventListener("popstate", handlePathChange);
+    };
+  }, []);
+
+  const handleItemClick = (path) => {
+    setActivePath(path);
     navigate(path);
   };
 
   return (
-    <div className="sidebar">
+    <div className="hidden md:block sticky top-0  border-r min-w-[15rem] min-h-screen dark:bg-background dark:border-r-none ">
       <Link to="/">
-        <div className="title text-red-500">sinay petroleum</div>
+        <div className="text-xl font-bold text-primary tracking-wide py-5 text-center cursor-pointer">
+          Sinay Petroleum
+        </div>
       </Link>
       <div className="seprator"></div>
-      <ul className="list">
-        <Link to="/" className={`${access ? "" : "hideItem"}`}>
-          <li
-            className={`${location.pathname === "/" ? "active" : ""} `}
-            onClick={(event) => handleClick(event, "/")}
+
+      <div className="flex flex-col gap-y-2 mt-2">
+        {paths.map((path, index) => (
+          <div
+            key={index}
+            className={`cursor-pointer flex items-center font-light mx-3 gap-3 py-2 px-2 ${
+              (path.path === "/dashboard" && activePath === "/dashboard") ||
+              activePath === path.path
+                ? "text-white bg-blue-600 dark:bg-primary rounded-md font-light"
+                : "text-slate-600  font-light hover:bg-primary/10 rounded-md   "
+            }`}
+            onClick={() => handleItemClick(path.path)}
           >
-            <DashboardIcon className="icon" />
-            <span>Dashaord</span>
-          </li>
-        </Link>
-        <Link to="/employees" className={`${access ? "" : "hideItem"}`}>
-          <li
-            className={`${location.pathname === "/employees" ? "active" : ""}`}
-            onClick={(event) => handleClick(event, "/employees")}
-          >
-            <PersonOutlineOutlinedIcon className="icon" />
-            <span>Employee</span>
-          </li>
-        </Link>
-        <Link to="/supplier" className={`${access ? "" : "hideItem"}`}>
-          <li
-            className={`${location.pathname === "/supplier" ? "active" : ""}`}
-            onClick={(event) => handleClick(event, "/supplier")}
-          >
-            <PersonPinOutlinedIcon className="icon" />
-            <span>Supplier</span>
-          </li>
-        </Link>{" "}
-        <Link to="/fuel" className={`${access ? "" : "hideItem"}`}>
-          <li
-            className={`${location.pathname === "/fuel" ? "active" : ""}`}
-            onClick={(event) => handleClick(event, "/fuel")}
-          >
-            <LocalGasStationOutlinedIcon className="icon" />
-            <span>Fuel</span>
-          </li>{" "}
-        </Link>{" "}
-        <Link to="/purchase" className={`${access ? "" : "hideItem"}`}>
-          <li
-            className={`${location.pathname === "/purchase" ? "active" : ""}`}
-            onClick={(event) => handleClick(event, "/purchase")}
-          >
-            <ShoppingBasketOutlinedIcon className="icon" />
-            <span>Purchase</span>
-          </li>{" "}
-        </Link>{" "}
-        <Link to="/customer">
-          <li
-            className={`${location.pathname === "/customer" ? "active" : ""}`}
-            onClick={(event) => handleClick(event, "/customer")}
-          >
-            <SupportAgentOutlinedIcon className="icon" />
-            <span>Customer</span>
-          </li>
-        </Link>
-        <Link to="/sales">
-          <li
-            className={`${location.pathname === "/sales" ? "active" : ""}`}
-            onClick={(event) => handleClick(event, "/sales")}
-          >
-            <MonetizationOnOutlinedIcon className="icon" />
-            <span>Sales</span>
-          </li>
-        </Link>{" "}
-        <Link to="/users" className={`${access ? "" : "hideItem"}`}>
-          <li
-            className={`${location.pathname === "/users" ? "active" : ""}`}
-            onClick={(event) => handleClick(event, "/users")}
-          >
-            <AccountCircleOutlinedIcon className="icon" />
-            <span>Users</span>
-          </li>
-        </Link>
-        <div className={`reports ${access ? "" : "hideItem"}`}>
-          <li
-            className={`reports ${access ? "" : "hideItem"}`}
-            onClick={() => {
-              !showReports ? setShowReports(true) : setShowReports(false);
-            }}
-          >
-            <SummarizeOutlinedIcon className="icon" />
-            <div className="main-rep ">
-              <span>Reports</span>
-            </div>
-            <KeyboardArrowDownOutlinedIcon
-              className={`"icon arrow " ${showReports ? "rotate" : ""}`}
-            />
-          </li>
-        </div>
-        <Link to="/purchaseReport">
-          <li className={`sub_rep ${showReports ? "show-sub_rep" : ""}`}>
-            <SummarizeOutlinedIcon className="icon" />
-            <span>Purchase report</span>
-          </li>
-        </Link>
-        <Link to="/salesReport">
-          <li className={`sub_rep ${showReports ? "show-sub_rep" : ""}`}>
-            <SummarizeOutlinedIcon className="icon" />
-            <span>Sales report</span>
-          </li>
-        </Link>
-        <Link to="/login">
-          <li
-            onClick={() => {
-              localStorage.removeItem("user");
-            }}
-          >
-            <LogoutOutlinedIcon className="icon" />
-            <span>Log Out</span>
-          </li>
-        </Link>
-      </ul>
+            {path.icon}
+            {path.name}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

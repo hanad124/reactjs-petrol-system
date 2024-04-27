@@ -266,9 +266,7 @@ const NewPurchase = () => {
 
   return (
     <div className="flex">
-      <Sidebar />
-      <div className="flex-1 ml-[233px]">
-        <Navbar />
+      <div className="flex-1">
         <div className="container mx-auto mt-10  lg:px-7">
           <div className="text-2xl font-medium text-gray-900 mb-6">
             Add New Purchase

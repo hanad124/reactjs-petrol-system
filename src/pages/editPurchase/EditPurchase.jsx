@@ -151,7 +151,6 @@ const EditPurchase = () => {
     fetchData();
   }, [fuelType]);
 
-  console.log("fuelTank: ", fuelTank);
   const handleUpdate = async () => {
     try {
       const docRef = doc(db, "purchase", exectPurchaseID);
@@ -177,9 +176,7 @@ const EditPurchase = () => {
 
   return (
     <div className="flex">
-      <Sidebar />
-      <div className="w-full ml-[233px]">
-        <Navbar />
+      <div className="w-full ">
         <div className="p-4">
           <h1 className="text-2xl text-slate-500 mb-4">Edit Purchase</h1>
           <div className="grid grid-cols-2 gap-4 mb-4">

@@ -108,22 +108,18 @@ const Purchase = () => {
 
   return (
     <div className="purchaseReport">
-      <Sidebar />
-      <div className="purchaseReportContainer">
-        <Navbar />
-        <div className="print-component">
-          <PurRepView ref={componentRef} />
-        </div>
-        <div className="datatable">
-          <div className="datatableTitle">
-            Purchase Report
-            <div className="link" onClick={handlePrint}>
-              <LocalPrintshopOutlinedIcon className="print-icon" />
-              Print Report
-            </div>
+      <div className="print-component">
+        <PurRepView ref={componentRef} />
+      </div>
+      <div className="datatable">
+        <div className="datatableTitle">
+          Purchase Report
+          <div className="link" onClick={handlePrint}>
+            <LocalPrintshopOutlinedIcon className="print-icon" />
+            Print Report
           </div>
-          <PurchaseData buttons={false} />
         </div>
+        <PurchaseData buttons={false} />
       </div>
     </div>
   );

@@ -150,9 +150,7 @@ const EditUser = () => {
 
   return (
     <div className="flex">
-      <Sidebar />
-      <div className="flex-1 ml-[233px]">
-        <Navbar />
+      <div className="flex-1 ">
         <div className="user-edit_container bg-white p-10 rounded-lg shadow-md">
           <div className="text-3xl font-medium mb-4 text-gray-400">
             Edit User
