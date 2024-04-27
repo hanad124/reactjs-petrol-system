@@ -77,7 +77,9 @@ const App = () => {
                           index
                           element={
                             <RequireAuth>
-                              <Home />
+                              <Layout>
+                                <Home />
+                              </Layout>
                             </RequireAuth>
                           }
                         />

@@ -13,23 +13,19 @@ import { SalesData } from "../sales/Sales";
 function Home() {
   return (
     <div className="home">
-      <Sidebar />
-      <div className="homeContainer">
-        <Navbar />
-        <div className="widgets">
-          <Widget type="employees" />
-          <Widget type="customers" />
-          <Widget type="purchase" />
-          <Widget type="sales" />
-        </div>
-        <div className="charts">
-          <Featured />
-          <Chart />
-        </div>
-        <div className="listContainer">
-          <div className="listTitle">The recent transactions for customers</div>
-          <SalesData buttons={false} />
-        </div>
+      <div className="widgets">
+        <Widget type="employees" />
+        <Widget type="customers" />
+        <Widget type="purchase" />
+        <Widget type="sales" />
+      </div>
+      <div className="charts">
+        <Featured />
+        <Chart />
+      </div>
+      <div className="listContainer">
+        <div className="listTitle">The recent transactions for customers</div>
+        <SalesData buttons={false} />
       </div>
     </div>
   );
